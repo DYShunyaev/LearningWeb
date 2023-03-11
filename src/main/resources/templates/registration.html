@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <h1>Registration</h1>
+    <p th:text = "${error}"></p>
+    <form action="registration" th:action="@{registration}" th:object="${user}" method="post">
+        <p>Username: <input name="userName" type="text" th:fieled="*{userName}"></p>
+        <p>Name: <input name="name" type="text" th:fieled="*{name}"></p>
+        <p>Surname: <input name="surname" type="text" th:fieled="*{surname}"></p>
+        <p>Gender: <input name="gender" type="text" th:fieled="*{gender}"></p>
+        <p>Email: <input name="email" type="email" th:fieled="*{email}" placeholder="user@gmail.com"></p>
+        <p>Birthday: <input name="birthday" type="date" th:fieled="*{birthday}"></p>
+        <p>Password: <input name="password" type="text" th:fieled="*{password}"></p>
+        <p><input type="submit" value="Submit"></p>
+    </form>
+</body>
+</html>
