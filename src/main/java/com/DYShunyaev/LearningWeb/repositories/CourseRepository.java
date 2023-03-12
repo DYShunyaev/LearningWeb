@@ -6,5 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface CourseRepository extends CrudRepository<Course, Long> {
-    List<Course> showCursesByUserId(Long user_id);
+    List<Course> findByUserId(Long user_id);
 }

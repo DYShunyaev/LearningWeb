@@ -22,6 +22,6 @@ public class CourseService {
     }
 
     public List<Course> showCoursesByUserId(Long userId) {
-        return courseRepository.showCursesByUserId(userId);
+        return courseRepository.findByUserId(userId);
     }
 }
