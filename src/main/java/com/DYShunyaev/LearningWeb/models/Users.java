@@ -3,20 +3,16 @@ package com.DYShunyaev.LearningWeb.models;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
 @Entity
 @Data
 @AllArgsConstructor
-public class User {
+public class Users {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -54,16 +50,21 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
-    public User() {
+    public Users() {
     }
 
-    public User(String username, String name, String surname, char gender, String email, Date birthday, String password) {
+    public Users(String username, String name, String surname, char gender, String email, Date birthday, String password) {
         this.userName = username;
         this.name = name;
         this.surname = surname;
         this.gender = gender;
         this.email = email;
         this.birthday = birthday;
+        this.password = password;
+    }
+
+    public Users(String username, String password) {
+        this.userName = username;
         this.password = password;
     }
 }

@@ -24,12 +24,12 @@ public class Course {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user;
+    private Users user;
 
     public Course() {
     }
 
-    public Course(String courseName, String coursePreview, String courseContent, User user) {
+    public Course(String courseName, String coursePreview, String courseContent, Users user) {
         this.courseName = courseName;
         this.coursePreview = coursePreview;
         this.courseContent = courseContent;
