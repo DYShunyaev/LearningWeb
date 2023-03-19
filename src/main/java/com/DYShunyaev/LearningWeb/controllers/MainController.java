@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 @Controller
@@ -33,7 +34,7 @@ public class MainController {
         Users users = userService.getAuthorizationUser();
         if (users.getRoles().stream().anyMatch(role -> role == Role.ADMIN)) {
             model.addAttribute("adminPage", users);
-            return "admin/adminMain";
+            return "redirect:/admin/main";
         }
         model.addAttribute("userPage", users);
         return "mainView";

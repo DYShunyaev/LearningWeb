@@ -12,7 +12,7 @@
                 <!--                <a class="link-secondary" href="#">Subscribe</a>-->
             </div>
             <div class="col-4 text-center">
-                <h1><a class="blog-header-logo text-dark" href="/mainView">Learning Platform</a></h1>
+                <h1><a class="blog-header-logo text-dark" href="/">Learning Platform</a></h1>
             </div>
             <div class="col-4 d-flex justify-content-end align-items-center">
                 <a class="link-secondary" href="#" aria-label="Search">
@@ -26,8 +26,8 @@
 
     <div class="nav-scroller py-1 mb-2" th:object="${userPage}">
         <nav class="nav d-flex justify-content-between">
-            <a class="p-2 link-secondary" th:href="'userPage/' + ${userPage.id}">My page</a>
-            <a class="p-2 link-secondary" href="#">U.S.</a>
+            <a class="p-2 link-secondary" th:href="${userPage.id}">My page</a>
+            <a class="p-2 link-secondary" th:href="'editProfile/' + ${userPage.id}">Edit Profile</a>
             <a class="p-2 link-secondary" href="#">Technology</a>
             <a class="p-2 link-secondary" href="#">Design</a>
             <a class="p-2 link-secondary" href="#">Culture</a>
@@ -48,6 +48,7 @@
         <p>Gender: <label th:text="${userPage.gender}"></label></p>
         <p>Email: <label th:text="${userPage.email}" ></label></p>
         <p>Birthday: <label th:text="${userPage.birthday}"></label></p>
+        <p><a th:href="'editProfile/' + ${userPage.id}">Edit Profile</a></p>
     </div>
     <br>
     <div>

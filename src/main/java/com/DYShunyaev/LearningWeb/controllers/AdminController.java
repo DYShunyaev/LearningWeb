@@ -1,6 +1,7 @@
 package com.DYShunyaev.LearningWeb.controllers;
 
 import com.DYShunyaev.LearningWeb.models.Course;
+import com.DYShunyaev.LearningWeb.models.Role;
 import com.DYShunyaev.LearningWeb.models.Users;
 import com.DYShunyaev.LearningWeb.services.CourseService;
 import com.DYShunyaev.LearningWeb.services.UserService;
@@ -10,7 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
+import java.util.*;
 
 @Controller
 @RequestMapping("/admin")
@@ -25,7 +26,7 @@ public class AdminController {
     }
 
     @RequestMapping("/main")
-    public String adminMain(Model model, Model getAllUsers){
+    public String adminMain(Model model, Model getAllUsers, Model getUserRole){
         Users admin = userService.getAuthorizationUser();
         model.addAttribute("adminPage", admin);
         List<Users> users = userService.findAllUsers();
@@ -47,5 +48,26 @@ public class AdminController {
         List<Course> courseList = courseService.showCoursesByUserId(user.getId());
         courseModel.addAttribute("courses", courseList);
         return "admin/adminPage";
+    }
+
+    @RequestMapping("/getUserAdminRole/{id}")
+    public String setUserAdminRole(@PathVariable(name = "id") Long user_id) {
+        Users user = userService.findUserById(user_id).orElseThrow();
+        Set<Role> roles = user.getRoles();
+        roles.add(Role.ADMIN);
+        user.setRoles(roles);
+        userService.saveNewUser(user);
+
+        return "redirect:/admin/main";
+    }
+    @RequestMapping("/removeAdminRole/{id}")
+    public String removeAdminRole(@PathVariable(name = "id") Long user_id) {
+        Users user = userService.findUserById(user_id).orElseThrow();
+        userService.deleteUserById(user_id);
+        user.setRoles(Collections.singleton(Role.USER));
+        user.setId(user_id);
+        userService.saveNewUser(user);
+
+        return "redirect:/admin/main";
     }
 }

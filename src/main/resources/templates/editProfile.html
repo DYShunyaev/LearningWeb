@@ -24,9 +24,9 @@
         </div>
     </header>
 
-    <div class="nav-scroller py-1 mb-2">
+    <div class="nav-scroller py-1 mb-2" th:object="${userPage}">
         <nav class="nav d-flex justify-content-between">
-            <a class="p-2 link-secondary" href="#">World</a>
+            <a class="p-2 link-secondary" th:href="'userPage/' + ${userPage.id}">My page</a>
             <a class="p-2 link-secondary" href="#">U.S.</a>
             <a class="p-2 link-secondary" href="#">Technology</a>
             <a class="p-2 link-secondary" href="#">Design</a>
@@ -42,8 +42,14 @@
     </div>
 </div>
 <body>
-    <div>
-        <p th:text="${error}"></p>
-    </div>
+<div th:each="userPage:${userPage}">
+    <form action="#" th:action="${userPage.id}" method="post">
+        <p>Name: <input name="name" type="text" th:value="${userPage.name}" class="form-control"></p>
+        <p>Surname: <input name="surname" type="text" th:value="${userPage.surname}" class="form-control"></p>
+        <p>Email: <input name="email" type="email" th:value="${userPage.email}" class="form-control"></p>
+        <p>Birthday: <input name="birthday" type="date" th:value="${userPage.birthday}" class="form-control"></p>
+        <p><input type="submit" value="Submit"/></p>
+    </form>
+</div>
 </body>
 </html>
