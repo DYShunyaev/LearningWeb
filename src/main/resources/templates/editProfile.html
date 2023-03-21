@@ -48,6 +48,7 @@
         <p>Surname: <input name="surname" type="text" th:value="${userPage.surname}" class="form-control"></p>
         <p>Email: <input name="email" type="email" th:value="${userPage.email}" class="form-control"></p>
         <p>Birthday: <input name="birthday" type="date" th:value="${userPage.birthday}" class="form-control"></p>
+        <p>Photo: <input name="photo" type="file" th:fieled="*{userPage.photo}" accept="image/*"></p>
         <p><input type="submit" value="Submit"/></p>
     </form>
 </div>

@@ -43,6 +43,7 @@
 </div>
 <body>
     <div th:object="${userPage}">
+        <p><img th:src="${userPage.photo}" ></p>
         <p>Name: <label th:text="${userPage.name}"></label></p>
         <p>Surname: <label th:text="${userPage.surname}"></label></p>
         <p>Gender: <label th:text="${userPage.gender}"></label></p>

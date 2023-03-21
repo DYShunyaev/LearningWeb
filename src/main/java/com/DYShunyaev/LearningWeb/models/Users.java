@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.io.File;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +46,9 @@ public class Users {
     @Column
     private boolean active;
 
+    @Column
+    private File photo;
+
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
@@ -66,5 +70,18 @@ public class Users {
     public Users(String username, String password) {
         this.userName = username;
         this.password = password;
+    }
+
+    public Users(String userName, String name, String surname, char gender, String email, Date birthday, String password, boolean active, File photo, Set<Role> roles) {
+        this.userName = userName;
+        this.name = name;
+        this.surname = surname;
+        this.gender = gender;
+        this.email = email;
+        this.birthday = birthday;
+        this.password = password;
+        this.active = active;
+        this.photo = photo;
+        this.roles = roles;
     }
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.io.File;
 import java.sql.Date;
 import java.util.Arrays;
 import java.util.List;
@@ -63,12 +64,14 @@ public class UserController {
                            @RequestParam(name = "name", required = false) String name,
                            @RequestParam(name = "surname",required = false) String surname,
                            @RequestParam(name = "email", required = false) String email,
-                           @RequestParam(name = "birthday", required = false)Date birthday) {
+                           @RequestParam(name = "birthday", required = false)Date birthday,
+                           @RequestParam(name = "photo", required = false)File photo) {
         Users user = userService.findUserById(id).orElseThrow();
         user.setName(name);
         user.setSurname(surname);
         user.setEmail(email);
         user.setBirthday(birthday);
+        user.setPhoto(photo);
         userService.saveNewUser(user);
         return "redirect:/userPage/" + user.getId();
     }
