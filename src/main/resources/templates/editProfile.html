@@ -43,12 +43,13 @@
 </div>
 <body>
 <div th:each="userPage:${userPage}">
-    <form action="#" th:action="${userPage.id}" method="post">
+    <form action="#" th:action="${userPage.id}" method="post" enctype="multipart/form-data">
         <p>Name: <input name="name" type="text" th:value="${userPage.name}" class="form-control"></p>
         <p>Surname: <input name="surname" type="text" th:value="${userPage.surname}" class="form-control"></p>
         <p>Email: <input name="email" type="email" th:value="${userPage.email}" class="form-control"></p>
         <p>Birthday: <input name="birthday" type="date" th:value="${userPage.birthday}" class="form-control"></p>
-        <p>Photo: <input name="photo" type="file" th:fieled="*{userPage.photo}" accept="image/*"></p>
+        <p>Photo: <input name="photo" type="file" th:fieled="*{userPage.photoName}" accept="image/*"></p>
+        <p><a th:href="'deletePhoto/' + ${userPage.id}">Remove Photo</a></p>
         <p><input type="submit" value="Submit"/></p>
     </form>
 </div>

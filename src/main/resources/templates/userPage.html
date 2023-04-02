@@ -26,8 +26,8 @@
 
     <div class="nav-scroller py-1 mb-2" th:object="${userPage}">
         <nav class="nav d-flex justify-content-between">
-            <a class="p-2 link-secondary" th:href="${userPage.id}">My page</a>
-            <a class="p-2 link-secondary" th:href="'editProfile/' + ${userPage.id}">Edit Profile</a>
+            <a class="p-2 link-secondary" th:href="${authUser.id}">My page</a>
+            <a class="p-2 link-secondary" th:href="'editProfile/' + ${authUser.id}">Edit Profile</a>
             <a class="p-2 link-secondary" href="#">Technology</a>
             <a class="p-2 link-secondary" href="#">Design</a>
             <a class="p-2 link-secondary" href="#">Culture</a>
@@ -43,19 +43,25 @@
 </div>
 <body>
     <div th:object="${userPage}">
-        <p><img th:src="${userPage.photo}" ></p>
+        <div th:if="${userPage.photoName != null}">
+            <p><img th:src="'/img/'+ ${userPage.userName} + '/' + ${userPage.photoName}" alt="Photo" width="400" height="266.666"></p>
+        </div>
         <p>Name: <label th:text="${userPage.name}"></label></p>
         <p>Surname: <label th:text="${userPage.surname}"></label></p>
         <p>Gender: <label th:text="${userPage.gender}"></label></p>
         <p>Email: <label th:text="${userPage.email}" ></label></p>
         <p>Birthday: <label th:text="${userPage.birthday}"></label></p>
-        <p><a th:href="'editProfile/' + ${userPage.id}">Edit Profile</a></p>
+        <div th:if="${userPage.id == authUser.id}">
+            <p><a th:href="'editProfile/' + ${userPage.id}">Edit Profile</a></p>
+            <p><a th:href="'/course/byUser/' + ${userPage.id} + '/createCourse'">Create Course</a></p>
+        </div>
     </div>
     <br>
     <div>
         <table>
             <tr th:each="list:${courses}">
                 <td th:text="${list.courseName}">Nothing</td>
+                <td th:text="${list.coursePreview}">Nothing</td>
             </tr>
         </table>
     </div>

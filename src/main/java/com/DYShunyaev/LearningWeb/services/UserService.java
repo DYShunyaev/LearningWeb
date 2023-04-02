@@ -23,24 +23,7 @@ public class UserService {
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-//    public Set<Role> getUserRoles(Long id) {
-//        Set<Role> roles = new HashSet<>();
-//        List<Role> role = new ArrayList<>();
-//        SessionFactory factory = new Configuration()
-//                .configure()
-//                .addAnnotatedClass(Role.class)
-//                .addAnnotatedClass(Users.class)
-//                .buildSessionFactory();
-//        Session session = null;
-//        try {
-//            session = factory.getCurrentSession();
-//            role = session.createQuery("from Role where user_id = " + id).getResultList();
-//        }finally {
-//            session.close();
-//            factory.close();
-//        }
-//        return roles = (Set<Role>) role;
-//    }
+
     public void saveNewUser(Users user) {
         userRepository.save(user);
     }

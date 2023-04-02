@@ -31,5 +31,9 @@ public class CourseService {
         return courseRepository.findByUserId(userId);
     }
 
+    public List<Course> showAllCourses() {
+        return (List<Course>) courseRepository.findAll();
+    }
+
 
 }

@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.io.File;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +21,9 @@ public class Users {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Course> courses = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "course_id")
+    private Course course;
     @Column
     private String userName;
 
@@ -47,7 +49,7 @@ public class Users {
     private boolean active;
 
     @Column
-    private File photo;
+    private String photoName;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
@@ -72,7 +74,7 @@ public class Users {
         this.password = password;
     }
 
-    public Users(String userName, String name, String surname, char gender, String email, Date birthday, String password, boolean active, File photo, Set<Role> roles) {
+    public Users(String userName, String name, String surname, char gender, String email, Date birthday, String password, boolean active, String photoName, Set<Role> roles) {
         this.userName = userName;
         this.name = name;
         this.surname = surname;
@@ -81,7 +83,7 @@ public class Users {
         this.birthday = birthday;
         this.password = password;
         this.active = active;
-        this.photo = photo;
+        this.photoName = photoName;
         this.roles = roles;
     }
 }
