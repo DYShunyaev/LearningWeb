@@ -20,5 +20,7 @@ public class MvcConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/img/**")
                 .addResourceLocations("file:" + uploadPath + "/");
+        registry.addResourceHandler("/logo.png")
+                .addResourceLocations("file:D:/Java/LearningWeb/logo.png");
     }
 }

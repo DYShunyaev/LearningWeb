@@ -4,27 +4,49 @@
     <title>Getting Started: Serving Web Content</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <style>
+        header {
+            background: #1663ac;
+            img: url(D:/Java/LearningWeb/logo.png);
+            position: relative;
+        }
+        body {
+            background: #1a1a1a;
+            color: #d1ffff;
+            left: 100;
+        }
+        .row-info {
+            margin-left: 315px;
+            float: left;
+            width: 25%;
+        }
+    </style>
 </head>
 <div class="container">
-    <header class="blog-header lh-1 py-3">
+    <header class="blog-header lh-10 py-2">
+
         <div class="row flex-nowrap justify-content-between align-items-center">
             <div class="col-4 pt-1">
-                <!--                <a class="link-secondary" href="#">Subscribe</a>-->
+                <img src="/logo.png" width="70" height="70">
             </div>
             <div class="col-4 text-center">
                 <h1><a class="blog-header-logo text-dark" href="/">Learning Platform</a></h1>
             </div>
-            <div class="col-4 d-flex justify-content-end align-items-center">
+            <div class="col-4 d-flex justify-content-end align-items-center" >
                 <a class="link-secondary" href="#" aria-label="Search">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="mx-3" role="img" viewBox="0 0 24 24"><title>Search</title><circle cx="10.5" cy="10.5" r="7.5"></circle><path d="M21 21l-5.2-5.2"></path></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="#1a1a1a" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="mx-3" role="img" viewBox="0 0 24 24"><title>Search</title><circle cx="10.5" cy="10.5" r="7.5"></circle><path d="M21 21l-5.2-5.2"></path></svg>
                 </a>
-                <a class="btn btn-sm btn-outline-secondary" href="/registration">Registration</a>
-                <a class="btn btn-sm btn-outline-secondary" href="/login">Sign up</a>
+                <a class="btn btn-sm btn-outline-dark" href="/registration">Registration</a>
+                <a class="btn btn-sm btn-outline-dark" href="/login">Sign up</a>
+                <form th:action="@{/logout}" method="post">
+                    <input type="submit" value="Sign out" class="btn btn-sm btn-outline-dark">
+                </form>
             </div>
+
         </div>
     </header>
 
-    <div class="nav-scroller py-1 mb-2" th:object="${userPage}">
+    <div class="nav-scroller py-1 mb-2" th:object="${userPage}" style="background:#140c76">
         <nav class="nav d-flex justify-content-between">
             <a class="p-2 link-secondary" th:href="${authUser.id}">My page</a>
             <a class="p-2 link-secondary" th:href="'editProfile/' + ${authUser.id}">Edit Profile</a>
@@ -42,7 +64,7 @@
     </div>
 </div>
 <body>
-    <div th:object="${userPage}">
+    <div th:object="${userPage}" class="row-info">
         <div th:if="${userPage.photoName != null}">
             <p><img th:src="'/img/'+ ${userPage.userName} + '/' + ${userPage.photoName}" alt="Photo" width="400" height="266.666"></p>
         </div>
@@ -51,17 +73,24 @@
         <p>Gender: <label th:text="${userPage.gender}"></label></p>
         <p>Email: <label th:text="${userPage.email}" ></label></p>
         <p>Birthday: <label th:text="${userPage.birthday}"></label></p>
+<!--        <div th:if="${authUser.roles == '[ADMIN,USER]'}">-->
+<!--            <p>Role: <label th:text="${userPage.roles}"></label></p>-->
+<!--        </div>-->
         <div th:if="${userPage.id == authUser.id}">
             <p><a th:href="'editProfile/' + ${userPage.id}">Edit Profile</a></p>
             <p><a th:href="'/course/byUser/' + ${userPage.id} + '/createCourse'">Create Course</a></p>
         </div>
     </div>
     <br>
-    <div>
+    <div class="row-fluid">
         <table>
             <tr th:each="list:${courses}">
                 <td th:text="${list.courseName}">Nothing</td>
+                <td><div th:if="${list.previewName != null}">
+                    <p><img th:src="'/img/'+ ${userPage.userName} + '/' +${list.courseName} + '/' + ${list.previewName}" alt="Photo" width="150" height="100"></p>
+                </div></td>
                 <td th:text="${list.coursePreview}">Nothing</td>
+                <td><a th:href="'/course/delete/' + ${userPage.id}">Delete Course</a></td>
             </tr>
         </table>
     </div>

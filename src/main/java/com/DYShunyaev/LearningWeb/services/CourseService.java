@@ -35,5 +35,9 @@ public class CourseService {
         return (List<Course>) courseRepository.findAll();
     }
 
+    public void deleteCourse(Long userId) {
+        courseRepository.deleteByUserId(userId);
+    }
+
 
 }

@@ -79,14 +79,15 @@
                     <td th:text="${list.id}" >Nothing</td>
                     <td th:text="${list.name}">Nothing</td>
                     <td th:text="${list.surname}">Nothing</td>
-                    <td th:text="${list.userName}">Nothing</td>
+<!--                    <td th:text="${list.userName}">Nothing</td>-->
+                    <td><a th:href="'/userPage/'+${list.id}" th:text="${list.userName}">Nothing</a></td>
                     <td th:text="${list.email}">Nothing</td>
                     <td th:text="${list.gender}">Nothing</td>
                     <td th:text="${list.birthday}">Nothing</td>
                     <td th:text="${list.password}">Nothing</td>
                     <td th:text="${list.active}">Nothing</td>
                     <td th:text="${list.roles}" ><font color="red">Nothing</font></td>
-                    <td><a th:href="'/admin/getUserAdminRole/' + ${list.id}">Set Admin Role</a></td>
+                    <td><a th:href="'/admin/getUserAdminRole/' + ${list.id}" >Set Admin Role</a></td>
                     <td><a th:href="'/admin/removeAdminRole/' + ${list.id}">Remove Admin Role</a></td>
                 </tr>
             </table>

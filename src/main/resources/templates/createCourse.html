@@ -42,10 +42,11 @@
   </div>
 </div>
 <body>
-  <form action="#" th:action="@{createCourse}" th:object="${course}" method="post">
+  <form action="#" th:action="@{createCourse}" th:object="${course}" method="post" enctype="multipart/form-data">
     <p>Course Name: <input name="courseName" type="text" th:fieled="*{courseName}"></p>
     <p>Preview: <input name="coursePreview" type="text" th:fieled="*{coursePreview}"></p>
     <p>Content: <input name="courseContent" type="text" th:fieled="*{courseContent}"></p>
+    <p>Preview: <input name="photo" type="file" th:fieled="*{previewName}" accept="image/*"></p>
     <p><input type="submit" value="Submit"></p>
   </form>
 
