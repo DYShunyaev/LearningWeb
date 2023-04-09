@@ -20,6 +20,40 @@
             float: left;
             width: 25%;
         }
+        table {
+            border-spacing: 0 10px;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: bold;
+        }
+        th {
+            padding: 10px 20px;
+            background: #1663ac;
+            color: #d1ffff;
+            border-right: 2px solid;
+            font-size: 0.9em;
+        }
+        th:first-child {
+            text-align: left;
+        }
+        th:last-child {
+            border-right: none;
+        }
+        td {
+            vertical-align: middle;
+            padding: 10px;
+            font-size: 14px;
+            text-align: center;
+            border-top: 2px solid #d1ffff;
+            border-bottom: 2px solid #d1ffff;
+            border-right: 2px solid #d1ffff;
+            }
+            td:first-child {
+            border-left: 2px solid #d1ffff;
+            border-right: none;
+        }
+        td:nth-child(2){
+            text-align: left;
+        }
     </style>
 </head>
 <div class="container">
@@ -82,15 +116,25 @@
         </div>
     </div>
     <br>
-    <div class="row-fluid">
+    <div class="row-fluid" th:if="${!courses.isEmpty()}">
         <table>
+            <tr>
+                <th>Preview</th>
+                <th>Course Name</th>
+                <th>Preview Text</th>
+                <div th:if="${userPage.id == authUser.id}">
+                    <th></th>
+                </div>
+            </tr>
             <tr th:each="list:${courses}">
-                <td th:text="${list.courseName}">Nothing</td>
                 <td><div th:if="${list.previewName != null}">
                     <p><img th:src="'/img/'+ ${userPage.userName} + '/' +${list.courseName} + '/' + ${list.previewName}" alt="Photo" width="150" height="100"></p>
                 </div></td>
+                <td th:text="${list.courseName}">Nothing</td>
                 <td th:text="${list.coursePreview}">Nothing</td>
-                <td><a th:href="'/course/delete/' + ${userPage.id}">Delete Course</a></td>
+                <div th:if="${userPage.id == authUser.id}">
+                    <td><a th:href="'/course/delete/' + ${userPage.id} + '/' + ${list.id}">Delete Course</a></td>
+                </div>
             </tr>
         </table>
     </div>

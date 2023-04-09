@@ -16,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RequestMapping("/course")
 @Controller
@@ -48,10 +50,11 @@ public class CourseController {
                              @RequestParam(name = "coursePreview") String coursePreview,
                              @RequestParam(name = "courseContent") String courseContent,
                              @RequestParam("photo")MultipartFile file) throws Exception {
+        courseName = getRegExCourseName(courseName);
         Course course = new Course(courseName, coursePreview, courseContent);
         Users user = userService.findUserById(user_id).orElseThrow();
         course.setUser(user);
-        String upload = uploadPath + "/" + user.getUserName().replaceAll(" ","") + "/" + courseName;
+        String upload = uploadPath + "/" + user.getUserName() + "/" + courseName;
         if (file != null) {
             File uploadDir = new File(upload);
 
@@ -68,9 +71,22 @@ public class CourseController {
         return "redirect:/userPage/" + user.getId();
     }
 
-    @RequestMapping("/delete/{id}")
-    public String deleteByUser(@PathVariable(name = "id") long user_id) {
-        courseService.deleteCourse(user_id);
+    private static String getRegExCourseName(String courseName) {
+        Pattern pattern = Pattern.compile("(\\w.+\\b)");
+        Matcher matcher = pattern.matcher(courseName);
+        StringBuilder builder = new StringBuilder();
+        while (matcher.find()){
+            for (int i = matcher.start(); i < matcher.end(); i++) {
+                builder.append(courseName.charAt(i));
+            }
+        }
+        return builder.toString();
+    }
+
+    @RequestMapping("/delete/{user_id}/{course_id}")
+    public String deleteByUser(@PathVariable(name = "user_id") long user_id,
+                               @PathVariable(name = "course_id") long course_id) {
+        courseService.deleteCourse(course_id);
         return "redirect:/userPage/" + user_id;
     }
 }
