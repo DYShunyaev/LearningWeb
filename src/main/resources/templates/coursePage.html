@@ -18,7 +18,7 @@
         .row-info {
             margin-left: 315px;
             float: left;
-            width: 25%;
+            width: 23%;
         }
         table {
             border-spacing: 0 10px;
@@ -109,7 +109,15 @@
   </div>
   <a class="btn btn-sm btn-outline-light" th:href="'/course/subscribe/' + ${authUser.id} + '/' + ${coursePage.id}">Subscribe</a>
   <a class="btn btn-sm btn-outline-light" th:href="'/course/unsubscribe/' + ${authUser.id} + '/' + ${coursePage.id}">Unsubscribe</a>
-  <a th:href="'/course/usersList/' + ${coursePage.id}">Subs</a>
+  <br/>
+  <p><a th:href="'/course/usersList/' + ${coursePage.id}">Subs</a></p>
+  <p><a th:href="'/course/editProfileCourse/' + ${coursePage.id}">Edit course</a></p>
+<!--  th:if="${coursePage.contentFileName != null}"-->
 </div>
+<div th:if="${coursePage.contentFileName != null}">
+    <p><video th:src="'/video/courses/' + ${coursePage.courseName} + '/content/' + ${coursePage.contentFileName}" type="video/*"
+              width="854" height="480" controls="controls"></video></p>
+</div>
+
 </body>
 </html>

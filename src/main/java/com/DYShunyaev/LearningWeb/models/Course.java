@@ -1,16 +1,16 @@
 package com.DYShunyaev.LearningWeb.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Data
-@ToString
+@Getter
+@Setter
 @AllArgsConstructor
 public class Course {
 
@@ -35,22 +35,25 @@ public class Course {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "teacher_id")
-    private Users user;
+    @ToString.Exclude
+    private Users teacher;
 
     @Column(name = "teacher_id", insertable = false, updatable = false)
     private Long teacherId;
 
-//    @ManyToMany(fetch = FetchType.LAZY,
-//            cascade = {
-//                    CascadeType.PERSIST,
-//                    CascadeType.MERGE
-//            })
-//    @JoinTable(
-//            name = "users_subscriptions",
-//            joinColumns = {@JoinColumn(name = "user_id")},
-//            inverseJoinColumns = { @JoinColumn(name = "course_id")}
-//    )
-//    private Set<Users> usersSubs = new HashSet<>();
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
+    @JoinTable(
+            name = "users_subscriptions",
+            joinColumns = {@JoinColumn(name = "course_id")},
+            inverseJoinColumns = { @JoinColumn(name = "users_id")}
+    )
+    @ToString.Exclude
+    private Set<Users> usersSubs = new HashSet<>();
+
     public Course() {
     }
 
@@ -61,12 +64,44 @@ public class Course {
     }
 
     public Course(String courseName, String coursePreview, String previewName, String contentFileName,
-                  String courseContent, Users user) {
+                  String courseContent, Users teacher) {
         this.courseName = courseName;
         this.coursePreview = coursePreview;
         this.previewName = previewName;
         this.contentFileName = contentFileName;
         this.courseContent = courseContent;
-        this.user = user;
+        this.teacher = teacher;
+    }
+
+    public Set<Users> getUsersSubs() {
+        return usersSubs;
+    }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "id=" + id +
+                ", courseName='" + courseName + '\'' +
+                ", coursePreview='" + coursePreview + '\'' +
+                ", previewName='" + previewName + '\'' +
+                ", contentFileName='" + contentFileName + '\'' +
+                ", courseContent='" + courseContent + '\'' +
+                ", teacher=" + teacher +
+                ", teacherId=" + teacherId +
+                ", usersSubs=" + usersSubs +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Course course = (Course) o;
+        return id != null && Objects.equals(id, course.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

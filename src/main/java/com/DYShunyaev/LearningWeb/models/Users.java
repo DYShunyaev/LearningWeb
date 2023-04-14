@@ -1,19 +1,15 @@
 package com.DYShunyaev.LearningWeb.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
-@Data
-@ToString
+@Getter
+@Setter
 @AllArgsConstructor
 public class Users {
 
@@ -48,7 +44,8 @@ public class Users {
     @Column
     private String photoName;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
     private List<Course> courses = new ArrayList<>();
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
@@ -56,17 +53,18 @@ public class Users {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
-//    @ManyToMany(fetch = FetchType.LAZY,
-//            cascade = {
-//                CascadeType.PERSIST,
-//                    CascadeType.MERGE
-//            })
-//    @JoinTable(
-//            name = "courses_subscriptions",
-//            joinColumns = {@JoinColumn(name = "course_id")},
-//            inverseJoinColumns = { @JoinColumn(name = "user_id")}
-//    )
-//    private Set<Course> coursesSubs = new HashSet<>();
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
+    @JoinTable(
+            name = "users_subscriptions",
+            joinColumns = {@JoinColumn(name = "users_id")},
+            inverseJoinColumns = { @JoinColumn(name = "course_id")}
+    )
+    @ToString.Exclude
+    private Set<Course> coursesSubs = new HashSet<>();
 
     public Users() {
     }
@@ -97,5 +95,45 @@ public class Users {
         this.active = active;
         this.photoName = photoName;
         this.roles = roles;
+    }
+
+    public Set<Course> getCoursesSubs() {
+        return coursesSubs;
+    }
+
+    public void setCoursesSubs(Set<Course> coursesSubs) {
+        this.coursesSubs = coursesSubs;
+    }
+
+    @Override
+    public String toString() {
+        return "Users{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", gender=" + gender +
+                ", email='" + email + '\'' +
+                ", birthday=" + birthday +
+                ", password='" + password + '\'' +
+                ", active=" + active +
+                ", photoName='" + photoName + '\'' +
+                ", courses=" + courses +
+                ", roles=" + roles +
+                ", coursesSubs=" + coursesSubs +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Users users = (Users) o;
+        return id != null && Objects.equals(id, users.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

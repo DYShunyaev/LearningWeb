@@ -137,5 +137,19 @@
             </tr>
         </table>
     </div>
+    <div>
+        <table>
+            <tr>
+                <th>Preview</th>
+                <th>Course Name</th>
+            </tr>
+            <tr th:each="courses:${coursesSubs}">
+                <td><div th:if="${courses.previewName != null}">
+                    <p><img th:src="'/img/courses/' + ${courses.courseName} + '/' + ${courses.previewName}" alt="Photo" width="150" height="100"></p>
+                </div></td>
+                <td><a th:href="'/course/' + ${courses.id}" th:text="${courses.courseName}">Nothing</a></td>
+            </tr>
+        </table>
+    </div>
 </body>
 </html>

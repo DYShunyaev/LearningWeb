@@ -44,7 +44,7 @@ public class AdminController {
         Users user = userService.findUserById(id).orElseThrow();
         model.addAttribute("adminPage", user);
 
-        List<Course> courseList = courseService.showCoursesByUserId(user.getId());
+        List<Course> courseList = courseService.showCoursesByTeacherId(user.getId());
         model.addAttribute("courses", courseList);
         return "admin/adminPage";
     }
@@ -53,6 +53,9 @@ public class AdminController {
     public String setUserAdminRole(@PathVariable(name = "id") Long user_id) {
         Users user = userService.findUserById(user_id).orElseThrow();
         Set<Role> roles = user.getRoles();
+        for (int i = 0; i < roles.size(); i++) {
+            roles.remove(Role.USER);
+        }
         roles.add(Role.ADMIN);
         user.setRoles(roles);
         userService.saveNewUser(user);
@@ -62,11 +65,16 @@ public class AdminController {
     @RequestMapping("/removeAdminRole/{id}")
     public String removeAdminRole(@PathVariable(name = "id") Long user_id) {
         Users user = userService.findUserById(user_id).orElseThrow();
-        userService.deleteUserById(user_id);
-        user.setRoles(Collections.singleton(Role.USER));
-        user.setId(user_id);
+//        userService.deleteUserById(user_id);
+//        user.setRoles(Collections.singleton(Role.USER));
+//        user.setId(user_id);
+//        userService.saveNewUser(user);
+        Set<Role> roles = user.getRoles();
+        for (int i = 0; i < roles.size(); i++) {
+            roles.remove(Role.ADMIN);
+        }
+        roles.add(Role.USER);
         userService.saveNewUser(user);
-
         return "redirect:/admin/main";
     }
 }

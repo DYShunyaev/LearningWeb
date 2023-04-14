@@ -50,7 +50,7 @@ public class AuthorizationController {
         if (username.equals("admin")) {
             user.setRoles(Collections.singleton(Role.ADMIN));
         }
-        user.setRoles(Collections.singleton(Role.USER));
+        else user.setRoles(Collections.singleton(Role.USER));
         userService.saveNewUser(user);
         return "redirect: /login";
     }

@@ -4,9 +4,6 @@ import com.DYShunyaev.LearningWeb.models.Course;
 import com.DYShunyaev.LearningWeb.models.Users;
 import com.DYShunyaev.LearningWeb.repositories.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -25,8 +22,8 @@ public class CourseService {
         courseRepository.save(course);
     }
 
-    public List<Course> showCoursesByUserId(Long userId) {
-        return courseRepository.findByTeacherId(userId);
+    public List<Course> showCoursesByTeacherId(Long teacherId) {
+        return courseRepository.findByTeacherId(teacherId);
     }
 
     public List<Course> showAllCourses() {
@@ -44,19 +41,17 @@ public class CourseService {
         return courseRepository.findById(id);
     }
 
-//    public void subscribe(Users user, Course course) {
-//        course.getUsersSubs().add(user);
-////        List<Users> list = course.getUsersSubs();
-////        System.out.println(Arrays.toString(new List[]{list}));
-//        courseRepository.save(course);
-//    }
-//
-//    public void unsubscribe(Users user, Course course) {
-//        course.getUsersSubs().remove(user);
-//        courseRepository.save(course);
-//    }
-//
-//    public Set<Course> findUsersByCourseId(Long courseId) {
-//        return courseRepository.findCourseByUserId(courseId);
+    public void subscribe(Users user, Course course) {
+        course.getUsersSubs().add(user);
+        courseRepository.save(course);
+    }
+
+    public void unsubscribe(Users user, Course course) {
+        course.getUsersSubs().remove(user);
+        courseRepository.save(course);
+    }
+
+//    public Set<Course> findCourseByUsersId(Long courseId) {
+//        return courseRepository.findCourseByUsersId(courseId);
 //    }
 }

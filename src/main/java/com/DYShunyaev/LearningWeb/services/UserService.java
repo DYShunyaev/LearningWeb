@@ -65,8 +65,7 @@ public class UserService {
     }
 
 //    public Set<Users> findUsersByCourseId(Long courseId) {
-//        Set<Users> usersList = userRepository.findUsersByCourseId(courseId);
-//        return usersList;
+//        return userRepository.findUsersByCourseId(courseId);
 //    }
 
 }

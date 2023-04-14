@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @RequestMapping("/userPage")
@@ -51,8 +52,11 @@ public class UserController {
         Users user = userService.findUserById(id).orElseThrow();
         model.addAttribute("userPage", user);
 
-        List<Course> courseList = courseService.showCoursesByUserId(user.getId());
+        List<Course> courseList = courseService.showCoursesByTeacherId(user.getId());
         model.addAttribute("courses", courseList);
+
+        Set<Course> coursesSubs = user.getCoursesSubs();
+        model.addAttribute("coursesSubs", coursesSubs);
         return "userPage";
     }
 

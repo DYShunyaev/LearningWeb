@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.util.List;
+import java.io.IOException;
+import java.sql.Date;
 import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -70,7 +71,7 @@ public class CourseController {
         courseName = getRegExCourseName(courseName);
         Course course = new Course(courseName, coursePreview, courseContent);
         Users user = userService.findUserById(user_id).orElseThrow();
-        course.setUser(user);
+        course.setTeacher(user);
         String upload = uploadPath + "/courses/" + courseName;
         if (file != null) {
             File uploadDir = new File(upload);
@@ -100,6 +101,42 @@ public class CourseController {
         return builder.toString();
     }
 
+    @RequestMapping("/editProfileCourse/{id}")
+    public String editProfile(@PathVariable(value = "id") Long id, Model model) {
+        Course course = courseService.findCourseById(id).orElseThrow();
+        model.addAttribute("authUser", userService.getAuthorizationUser());
+        model.addAttribute("coursePage", course);
+        return "editProfileCourse";
+    }
+
+    @PostMapping("/editProfileCourse/{id}")
+    public String saveEdit(@PathVariable(value = "id") Long id,
+                           @RequestParam(name = "courseName", required = false) String courseName,
+                           @RequestParam(name = "coursePreview",required = false) String coursePreview,
+                           @RequestParam(name = "courseContent", required = false) String courseContent,
+                           @RequestParam("video")MultipartFile file) throws IOException {
+        Course course = courseService.findCourseById(id).orElseThrow();
+        course.setCourseName(courseName);
+        course.setCoursePreview(coursePreview);
+        course.setCourseContent(courseContent);
+
+        String upload = uploadPath + "/courses/" + courseName + "/content/";
+        if (file != null) {
+            File uploadDir = new File(upload);
+
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir();
+            }
+
+            String uuidFile = UUID.randomUUID().toString();
+            String resultFileName = uuidFile + "." + file.getOriginalFilename();
+            file.transferTo(new File(upload + resultFileName));
+            course.setContentFileName(resultFileName);
+        }
+        courseService.createNewCourse(course);
+        return "redirect:/course/" + id;
+    }
+
     @RequestMapping("/delete/{user_id}/{course_id}")
     public String deleteByUser(@PathVariable(name = "user_id") long userId,
                                @PathVariable(name = "course_id") long courseId) {
@@ -107,34 +144,37 @@ public class CourseController {
         return "redirect:/userPage/" + userId;
     }
 
-//    @RequestMapping("/subscribe/{user_id}/{course_id}")
-//    public String subscribe(@PathVariable(name = "user_id") long userId,
-//                            @PathVariable(name = "course_id") long courseId) {
-//        Users user = userService.findUserById(userId).orElseThrow();
-//        Course course = courseService.findCourseById(courseId).orElseThrow();
-//
-//        courseService.subscribe(user, course);
-//
-//        return "redirect:/course/" + courseId;
-//    }
-//
-//    @RequestMapping("/unsubscribe/{user_id}/{course_id}")
-//    public String unsubscribe(@PathVariable(name = "user_id") long userId,
-//                            @PathVariable(name = "course_id") long courseId) {
-//        Users user = userService.findUserById(userId).orElseThrow();
-//        Course course = courseService.findCourseById(courseId).orElseThrow();
-//
-//        courseService.unsubscribe(user, course);
-//
-//        return "redirect:/course/" + courseId;
-//    }
-//
-//    @RequestMapping("/usersList/{course_id}")
-//    public String usersListByCourse(@PathVariable(name = "course_id") long id,
-//                                    Model model) {
-//        model.addAttribute("authUser", userService.getAuthorizationUser());
-//        Set<Course> usersList = courseService.findUsersByCourseId(502L);
-//        model.addAttribute("usersList", usersList);
-//        return "usersListByCourse";
-//    }
+    @RequestMapping("/subscribe/{user_id}/{course_id}")
+    public String subscribe(@PathVariable(name = "user_id") long userId,
+                            @PathVariable(name = "course_id") long courseId) {
+        Users user = userService.findUserById(userId).orElseThrow();
+        Course course = courseService.findCourseById(courseId).orElseThrow();
+
+        courseService.subscribe(user, course);
+
+        return "redirect:/course/" + courseId;
+    }
+
+    @RequestMapping("/unsubscribe/{user_id}/{course_id}")
+    public String unsubscribe(@PathVariable(name = "user_id") long userId,
+                            @PathVariable(name = "course_id") long courseId) {
+        Users user = userService.findUserById(userId).orElseThrow();
+        Course course = courseService.findCourseById(courseId).orElseThrow();
+
+        courseService.unsubscribe(user, course);
+
+        return "redirect:/course/" + courseId;
+    }
+
+    @RequestMapping("/usersList/{course_id}")
+    public String usersListByCourse(@PathVariable(name = "course_id") long courseId,
+                                    Model model) {
+
+        Course course = courseService.findCourseById(courseId).orElseThrow();
+        Set<Users> usersSet = course.getUsersSubs();
+
+        model.addAttribute("usersList", usersSet);
+        model.addAttribute("authUser", userService.getAuthorizationUser());
+        return "usersListByCourse";
+    }
 }
