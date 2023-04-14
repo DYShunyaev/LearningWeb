@@ -41,19 +41,18 @@ public class UserController {
     }
 
     @RequestMapping("/{id}")
-    public String userPage(@PathVariable(value = "id", required = false) long id, Model model,
-                           Model courseModel, Model authorizationUser ) {
+    public String userPage(@PathVariable(value = "id", required = false) long id, Model model) {
         if (!userService.existUserById(id)) {
             String message = "This user not founded.";
             model.addAttribute("error", message);
             return "error";
         }
-        authorizationUser.addAttribute("authUser", userService.getAuthorizationUser());
+        model.addAttribute("authUser", userService.getAuthorizationUser());
         Users user = userService.findUserById(id).orElseThrow();
         model.addAttribute("userPage", user);
 
         List<Course> courseList = courseService.showCoursesByUserId(user.getId());
-        courseModel.addAttribute("courses", courseList);
+        model.addAttribute("courses", courseList);
         return "userPage";
     }
 

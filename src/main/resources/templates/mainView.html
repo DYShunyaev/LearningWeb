@@ -54,6 +54,18 @@
 </div>
 <body bgcolor="#500e4b">
     <center><h1>Learning Platform</h1></center>
+    <div>
+        <center>
+            <table>
+                <tr th:each="courseList:${courses}">
+                    <td><a th:href="'/course/' + ${courseList.id}" th:text="${courseList.courseName}">Nothing</a></td>
+                    <td><div th:if="${courseList.previewName != null}">
+                        <p><img th:src="'/img/courses/' + ${courseList.courseName} + '/' + ${courseList.previewName}" alt="Photo" width="150" height="100"></p>
+                    </div></td>
+                </tr>
+            </table>
+        </center>
+    </div>
 <!--    <a href="/registration">Registration</a>-->
 <!--    <a href="/search">Registration</a>-->
 </body>

@@ -3,14 +3,14 @@ package com.DYShunyaev.LearningWeb.models;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.ToString;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
 @Data
+@ToString
 @AllArgsConstructor
 public class Course {
 
@@ -34,19 +34,23 @@ public class Course {
     private String courseContent;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "teacher_id")
     private Users user;
 
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Users> usersList = new ArrayList<>();
+    @Column(name = "teacher_id", insertable = false, updatable = false)
+    private Long teacherId;
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_subscriptions",
-            joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = { @JoinColumn(name = "course_id")}
-    )
-    private Set<Users> usersSet = new HashSet<>();
+//    @ManyToMany(fetch = FetchType.LAZY,
+//            cascade = {
+//                    CascadeType.PERSIST,
+//                    CascadeType.MERGE
+//            })
+//    @JoinTable(
+//            name = "users_subscriptions",
+//            joinColumns = {@JoinColumn(name = "user_id")},
+//            inverseJoinColumns = { @JoinColumn(name = "course_id")}
+//    )
+//    private Set<Users> usersSubs = new HashSet<>();
     public Course() {
     }
 

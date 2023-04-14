@@ -9,9 +9,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class CourseService {
@@ -28,7 +26,7 @@ public class CourseService {
     }
 
     public List<Course> showCoursesByUserId(Long userId) {
-        return courseRepository.findByUserId(userId);
+        return courseRepository.findByTeacherId(userId);
     }
 
     public List<Course> showAllCourses() {
@@ -38,6 +36,27 @@ public class CourseService {
     public void deleteCourse(Long id) {
         courseRepository.deleteById(id);
     }
+    public boolean existCourseById(Long id) {
+        return courseRepository.existsById(id);
+    }
 
+    public Optional<Course> findCourseById(Long id) {
+        return courseRepository.findById(id);
+    }
 
+//    public void subscribe(Users user, Course course) {
+//        course.getUsersSubs().add(user);
+////        List<Users> list = course.getUsersSubs();
+////        System.out.println(Arrays.toString(new List[]{list}));
+//        courseRepository.save(course);
+//    }
+//
+//    public void unsubscribe(Users user, Course course) {
+//        course.getUsersSubs().remove(user);
+//        courseRepository.save(course);
+//    }
+//
+//    public Set<Course> findUsersByCourseId(Long courseId) {
+//        return courseRepository.findCourseByUserId(courseId);
+//    }
 }

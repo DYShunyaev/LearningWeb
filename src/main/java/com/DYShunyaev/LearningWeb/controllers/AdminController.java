@@ -26,7 +26,7 @@ public class AdminController {
     }
 
     @RequestMapping("/main")
-    public String adminMain(Model model, Model getAllUsers, Model getUserRole){
+    public String adminMain(Model model, Model getAllUsers){
         Users admin = userService.getAuthorizationUser();
         model.addAttribute("adminPage", admin);
         List<Users> users = userService.findAllUsers();
@@ -35,8 +35,7 @@ public class AdminController {
     }
 
     @RequestMapping("/adminPage/{id}")
-    public String adminPage(@PathVariable(value = "id", required = false) long id, Model model,
-                           Model courseModel) {
+    public String adminPage(@PathVariable(value = "id", required = false) long id, Model model) {
         if (!userService.existUserById(id)) {
             String message = "This admin not founded.";
             model.addAttribute("error", message);
@@ -46,7 +45,7 @@ public class AdminController {
         model.addAttribute("adminPage", user);
 
         List<Course> courseList = courseService.showCoursesByUserId(user.getId());
-        courseModel.addAttribute("courses", courseList);
+        model.addAttribute("courses", courseList);
         return "admin/adminPage";
     }
 

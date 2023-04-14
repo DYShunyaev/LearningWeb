@@ -1,11 +1,7 @@
 package com.DYShunyaev.LearningWeb.services;
 
-import com.DYShunyaev.LearningWeb.models.Role;
 import com.DYShunyaev.LearningWeb.models.Users;
 import com.DYShunyaev.LearningWeb.repositories.UserRepository;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -67,5 +63,10 @@ public class UserService {
     public void deleteUserById(Long id) {
         userRepository.deleteById(id);
     }
+
+//    public Set<Users> findUsersByCourseId(Long courseId) {
+//        Set<Users> usersList = userRepository.findUsersByCourseId(courseId);
+//        return usersList;
+//    }
 
 }

@@ -24,7 +24,7 @@ public class AuthorizationController {
     }
 
     @RequestMapping("/registration")
-    public String registration(Model model, Model model2) {
+    public String registration(Model model) {
         Users user = new Users();
         model.addAttribute("user", user);
         return "registration";
@@ -38,13 +38,13 @@ public class AuthorizationController {
                               @RequestParam(name = "email", required = false) String email,
                               @RequestParam(name = "birthday", required = false) Date birthday,
                               @RequestParam(name = "password", required = false) String password,
-                              Model model, Model model1) {
+                              Model model) {
         if (!userService.existByUserName(username)) {
             String message = "Users with this username is already registered!";
-            model1.addAttribute("error", message);
+            model.addAttribute("error", message);
             Users user = new Users();
             model.addAttribute("user", user);
-            return registration(model,model1);
+            return registration(model);
         }
         Users user = new Users(username, name, surname, gender, email, birthday, password);
         if (username.equals("admin")) {

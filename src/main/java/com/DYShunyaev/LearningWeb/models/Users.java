@@ -3,6 +3,7 @@ package com.DYShunyaev.LearningWeb.models;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.ToString;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.Set;
 
 @Entity
 @Data
+@ToString
 @AllArgsConstructor
 public class Users {
 
@@ -19,12 +21,6 @@ public class Users {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Course> courses = new ArrayList<>();
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "course_id")
-    private Course course;
     @Column
     private String userName;
 
@@ -52,18 +48,25 @@ public class Users {
     @Column
     private String photoName;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Course> courses = new ArrayList<>();
+
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_subscriptions",
-            joinColumns = { @JoinColumn(name = "course_id")},
-            inverseJoinColumns = {@JoinColumn(name = "user_id")}
-    )
-    private Set<Course> coursesSet = new HashSet<>();
+//    @ManyToMany(fetch = FetchType.LAZY,
+//            cascade = {
+//                CascadeType.PERSIST,
+//                    CascadeType.MERGE
+//            })
+//    @JoinTable(
+//            name = "courses_subscriptions",
+//            joinColumns = {@JoinColumn(name = "course_id")},
+//            inverseJoinColumns = { @JoinColumn(name = "user_id")}
+//    )
+//    private Set<Course> coursesSubs = new HashSet<>();
 
     public Users() {
     }

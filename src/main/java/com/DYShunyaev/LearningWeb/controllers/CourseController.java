@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,6 +36,21 @@ public class CourseController {
     @Value("${upload.path}")
     private String uploadPath;
 
+    @RequestMapping("/{id}")
+    public String courseView(@PathVariable(value = "id", required = false) long courseId, Model model) {
+        model.addAttribute("authUser", userService.getAuthorizationUser());
+
+        if (!courseService.existCourseById(courseId)) {
+            String message = "This user not founded.";
+            model.addAttribute("error", message);
+            return "error";
+        }
+
+        Course course = courseService.findCourseById(courseId).orElseThrow();
+        model.addAttribute("coursePage", course);
+
+        return "coursePage";
+    }
     @RequestMapping("/byUser/{id}/createCourse")
     public String createCourse(@PathVariable(name = "id") long userId,
                                Model model, Model userModel) {
@@ -54,7 +71,7 @@ public class CourseController {
         Course course = new Course(courseName, coursePreview, courseContent);
         Users user = userService.findUserById(user_id).orElseThrow();
         course.setUser(user);
-        String upload = uploadPath + "/" + user.getUserName() + "/" + courseName;
+        String upload = uploadPath + "/courses/" + courseName;
         if (file != null) {
             File uploadDir = new File(upload);
 
@@ -84,9 +101,40 @@ public class CourseController {
     }
 
     @RequestMapping("/delete/{user_id}/{course_id}")
-    public String deleteByUser(@PathVariable(name = "user_id") long user_id,
-                               @PathVariable(name = "course_id") long course_id) {
-        courseService.deleteCourse(course_id);
-        return "redirect:/userPage/" + user_id;
+    public String deleteByUser(@PathVariable(name = "user_id") long userId,
+                               @PathVariable(name = "course_id") long courseId) {
+        courseService.deleteCourse(courseId);
+        return "redirect:/userPage/" + userId;
     }
+
+//    @RequestMapping("/subscribe/{user_id}/{course_id}")
+//    public String subscribe(@PathVariable(name = "user_id") long userId,
+//                            @PathVariable(name = "course_id") long courseId) {
+//        Users user = userService.findUserById(userId).orElseThrow();
+//        Course course = courseService.findCourseById(courseId).orElseThrow();
+//
+//        courseService.subscribe(user, course);
+//
+//        return "redirect:/course/" + courseId;
+//    }
+//
+//    @RequestMapping("/unsubscribe/{user_id}/{course_id}")
+//    public String unsubscribe(@PathVariable(name = "user_id") long userId,
+//                            @PathVariable(name = "course_id") long courseId) {
+//        Users user = userService.findUserById(userId).orElseThrow();
+//        Course course = courseService.findCourseById(courseId).orElseThrow();
+//
+//        courseService.unsubscribe(user, course);
+//
+//        return "redirect:/course/" + courseId;
+//    }
+//
+//    @RequestMapping("/usersList/{course_id}")
+//    public String usersListByCourse(@PathVariable(name = "course_id") long id,
+//                                    Model model) {
+//        model.addAttribute("authUser", userService.getAuthorizationUser());
+//        Set<Course> usersList = courseService.findUsersByCourseId(502L);
+//        model.addAttribute("usersList", usersList);
+//        return "usersListByCourse";
+//    }
 }

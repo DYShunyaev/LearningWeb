@@ -70,7 +70,6 @@
                 <a class="link-secondary" href="#" aria-label="Search">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="#1a1a1a" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="mx-3" role="img" viewBox="0 0 24 24"><title>Search</title><circle cx="10.5" cy="10.5" r="7.5"></circle><path d="M21 21l-5.2-5.2"></path></svg>
                 </a>
-                <a class="btn btn-sm btn-outline-dark" href="/registration">Registration</a>
                 <a class="btn btn-sm btn-outline-dark" href="/login">Sign up</a>
                 <form th:action="@{/logout}" method="post">
                     <input type="submit" value="Sign out" class="btn btn-sm btn-outline-dark">
@@ -128,9 +127,9 @@
             </tr>
             <tr th:each="list:${courses}">
                 <td><div th:if="${list.previewName != null}">
-                    <p><img th:src="'/img/'+ ${userPage.userName} + '/' +${list.courseName} + '/' + ${list.previewName}" alt="Photo" width="150" height="100"></p>
+                    <p><img th:src="'/img/courses/' + ${list.courseName} + '/' + ${list.previewName}" alt="Photo" width="150" height="100"></p>
                 </div></td>
-                <td th:text="${list.courseName}">Nothing</td>
+                <td><a th:href="'/course/' + ${list.id}" th:text="${list.courseName}">Nothing</a></td>
                 <td th:text="${list.coursePreview}">Nothing</td>
                 <div th:if="${userPage.id == authUser.id}">
                     <td><a th:href="'/course/delete/' + ${userPage.id} + '/' + ${list.id}">Delete Course</a></td>

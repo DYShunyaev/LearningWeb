@@ -1,5 +1,6 @@
 package com.DYShunyaev.LearningWeb.controllers;
 
+import com.DYShunyaev.LearningWeb.models.Course;
 import com.DYShunyaev.LearningWeb.models.Role;
 import com.DYShunyaev.LearningWeb.models.Users;
 import com.DYShunyaev.LearningWeb.services.CourseService;
@@ -9,8 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 @Controller
 public class MainController {
@@ -31,6 +34,8 @@ public class MainController {
 
     @RequestMapping("/")
     public String mainView(Model model) {
+        List<Course> courseList = courseService.showAllCourses();
+        model.addAttribute("courses", courseList);
         Users users = userService.getAuthorizationUser();
         if (users.getRoles().stream().anyMatch(role -> role == Role.ADMIN)) {
             model.addAttribute("adminPage", users);
