@@ -52,19 +52,23 @@ public class UserController {
         Users user = userService.findUserById(id).orElseThrow();
         model.addAttribute("userPage", user);
 
+        String role = user.getRoles().toString().replaceAll("\\W","");
+        model.addAttribute("userRole", role);
+
         List<Course> courseList = courseService.showCoursesByTeacherId(user.getId());
         model.addAttribute("courses", courseList);
 
         Set<Course> coursesSubs = user.getCoursesSubs();
         model.addAttribute("coursesSubs", coursesSubs);
-        return "userPage";
+        return "users/userPage";
     }
 
     @RequestMapping("/editProfile/{id}")
     public String editProfile(@PathVariable(value = "id") Long id, Model model) {
         Users user = userService.findUserById(id).orElseThrow();
         model.addAttribute("userPage", user);
-        return "editProfile";
+        model.addAttribute("authUser", userService.getAuthorizationUser());
+        return "users/editProfile";
     }
 
     @PostMapping("/editProfile/{id}")

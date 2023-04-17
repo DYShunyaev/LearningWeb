@@ -49,29 +49,29 @@ public class AdminController {
         return "admin/adminPage";
     }
 
-    @RequestMapping("/getUserAdminRole/{id}")
-    public String setUserAdminRole(@PathVariable(name = "id") Long user_id) {
+    @RequestMapping("/getUserRole/{role}/{id}")
+    public String setUserAdminRole(@PathVariable(name = "id") Long user_id,
+                                   @PathVariable(name = "role") String role) {
         Users user = userService.findUserById(user_id).orElseThrow();
         Set<Role> roles = user.getRoles();
         for (int i = 0; i < roles.size(); i++) {
             roles.remove(Role.USER);
         }
-        roles.add(Role.ADMIN);
+        if (role.equals("Admin")) roles.add(Role.ADMIN);
+        else roles.add(Role.TEACHER);
         user.setRoles(roles);
         userService.saveNewUser(user);
 
         return "redirect:/admin/main";
     }
-    @RequestMapping("/removeAdminRole/{id}")
-    public String removeAdminRole(@PathVariable(name = "id") Long user_id) {
+    @RequestMapping("/removeRole/{role}/{id}")
+    public String removeAdminRole(@PathVariable(name = "id") Long user_id,
+                                  @PathVariable(name = "role") String role) {
         Users user = userService.findUserById(user_id).orElseThrow();
-//        userService.deleteUserById(user_id);
-//        user.setRoles(Collections.singleton(Role.USER));
-//        user.setId(user_id);
-//        userService.saveNewUser(user);
         Set<Role> roles = user.getRoles();
         for (int i = 0; i < roles.size(); i++) {
-            roles.remove(Role.ADMIN);
+            if (role.equals("Admin"))roles.remove(Role.ADMIN);
+            else roles.remove(Role.TEACHER);
         }
         roles.add(Role.USER);
         userService.saveNewUser(user);

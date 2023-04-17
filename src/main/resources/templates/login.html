@@ -1,94 +1,99 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Getting Started: Serving Web Content</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <style>
-        header {
-            background: #1663ac;
-            img: url(D:/Java/LearningWeb/logo.png);
-            position: relative;
-        }
         body {
-            background: #1a1a1a;
-            color: #d1ffff;
+            background: #212529;
+            color: #ffffff;
+            height: 100%;
+        }
+        .row-log {
+            margin-left: 750px;
+            margin-right: 750px;
+            margin-top: 140px;
+
+        }
+        .card {
+            background-color: #414040;
+            box-shadow: 0 0 0 2px #2c2b2b, 0 0 2px #333;
+            position: relative;
+            border-radius: 20px;
+        }
+        .card-main {
+            background-color: #586b7d;
+            box-shadow: 0 0 0 2px #2c2b2b, 0 0 2px #333;
+            position: relative;
+            height: 85px;
+            margin-bottom: 15px;
+            border-radius: 20px;
+            content: center;
+        }
+        .content-card {
+            margin-left: 15px;
+            margin-right: 15px;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+        .content-card-main {
+            margin-left: 10px;
+            margin-right: 10px;
+            margin-top: 10px;
+            margin-bottom: 10px;
         }
     </style>
 </head>
-<div class="container">
-    <header class="blog-header lh-1 py-2">
-        <div class="row flex-nowrap justify-content-between align-items-center">
-            <div class="col-4 pt-1">
-                <img src="/logo.png" width="70" height="70">
-            </div>
-            <div class="col-4 text-center">
-                <h1><a class="blog-header-logo text-dark" href="/">Learning Platform</a></h1>
-            </div>
-            <div class="col-4 d-flex justify-content-end align-items-center">
-                <a class="link-secondary" href="#" aria-label="Search">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="mx-3" role="img" viewBox="0 0 24 24"><title>Search</title><circle cx="10.5" cy="10.5" r="7.5"></circle><path d="M21 21l-5.2-5.2"></path></svg>
-                </a>
-                <a class="btn btn-sm btn-outline-secondary" href="/registration">Registration</a>
-                <a class="btn btn-sm btn-outline-secondary" href="/login">Sign up</a>
-            </div>
-        </div>
-    </header>
+<body>
+<div class="row-log">
+        <div class="card">
+            <div class="content-card">
+                <center>
+                    <div>
+                        <img src="/logo.png" width="120" height="120">
+                    </div>
+                    <br/>
+<!--                    <div class="card-main">-->
+<!--                        <div>-->
+<!--                            <h2>Welcome to-->
+<!--                                <p>Learning Platform!</p>-->
+<!--                            </h2>-->
+<!--                        </div>-->
+<!--                    </div>-->
+                    <h2 class="h4 mb-3 fw-normal">
+                        Please sign in or
+                        <p><a href="/registration" style="color:white">registration</a></p>
+                    </h2>
+                    <form th:action="@{/login}" method="post">
+                        <div th:if="${param.error}" class="h7 mb-3 fw-normal">
+                            Invalid username and password.
+                        </div>
+                        <div th:if="${param.logout}" class="h7 mb-3 fw-normal">
+                            You have been logged out.
+                        </div>
+                        <div class="form-floating">
+                            <h5>Username:</h5>
+                            <input class="form-control-lg" type="text" placeholder="Username" name="username">
 
-<!--    <div class="nav-scroller py-1 mb-2">-->
-<!--        <nav class="nav d-flex justify-content-between">-->
-<!--            <a class="p-2 link-secondary" href="#">World</a>-->
-<!--            <a class="p-2 link-secondary" href="#">U.S.</a>-->
-<!--            <a class="p-2 link-secondary" href="#">Technology</a>-->
-<!--            <a class="p-2 link-secondary" href="#">Design</a>-->
-<!--            <a class="p-2 link-secondary" href="#">Culture</a>-->
-<!--            <a class="p-2 link-secondary" href="#">Business</a>-->
-<!--            <a class="p-2 link-secondary" href="#">Politics</a>-->
-<!--            <a class="p-2 link-secondary" href="#">Opinion</a>-->
-<!--            <a class="p-2 link-secondary" href="#">Science</a>-->
-<!--            <a class="p-2 link-secondary" href="#">Health</a>-->
-<!--            <a class="p-2 link-secondary" href="#">Style</a>-->
-<!--            <a class="p-2 link-secondary" href="#">Travel</a>-->
-<!--        </nav>-->
-<!--    </div>-->
+                        </div>
+                        <br/>
+                        <div class="form-floating">
+                            <h5>Password:</h5>
+                            <input type="password" class="form-control-lg" id="floatingPassword" placeholder="Password" name="password">
+                            <kpm-button style="position: relative !important; z-index: 3 !important;" class="jYwCKXeG1NQk9WXqAtIT kpm_input-field-button kpm_gray-key-icon"><div class="YaUcSL9pZJkawAbwG9cF" style="position: absolute !important; width: 32px !important; height: 24px !important; top: -40px !important; left: 105px !important;"><svg class="J6MDbAOqISHJlMVCHWAE" viewBox="25 25 50 50" xmlnsXlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" style="inset: 0px 4px !important;"><circle cx="50" cy="50" r="20"></circle></svg></div><circle cx="11.5" cy="9.5" r="3" fill="white" stroke="white"></circle><path d="M10 9H13V18L11.5 19L10 18V9Z" fill="white"></path><path d="M12.5 8.5C12.5 9.05228 12.0523 9.5 11.5 9.5C10.9477 9.5 10.5 9.05228 10.5 8.5C10.5 7.94772 10.9477 7.5 11.5 7.5C12.0523 7.5 12.5 7.94772 12.5 8.5Z" class="x42ZoZlm9VYGazCSUyBE"></path><rect x="10" y="16" width="1" height="1" class="x42ZoZlm9VYGazCSUyBE"></rect><rect x="10" y="14" width="1" height="1" class="x42ZoZlm9VYGazCSUyBE"></rect></svg></kpm-button>
+                        </div>
+                        <br/>
+                        <button class="btn btn-lg btn-outline-light btn-block" type="submit">Sign in</button>
+                    </form>
+                </center>
+            </div>
+    </div>
 </div>
-<body class="text-center">
-
-<main class="form-signin w-100 m-auto">
-    <form th:action="@{/login}" method="post">
-        <br><br><br><br><br>
-<!--        <img class="mb-4" src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">-->
-        <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
-        <div th:if="${param.error}" class="h7 mb-3 fw-normal">
-            Invalid username and password.
-        </div>
-        <div th:if="${param.logout}" class="h7 mb-3 fw-normal">
-            You have been logged out.
-        </div>
-        <div class="form-floating">
-            <input class="form-control-lg" id="floatingInput" placeholder="name@example.com" type="text" name="username">
-<!--            <label for="floatingInput">Email address</label>-->
-            <kpm-button style="position: relative !important; z-index: 3 !important;" class="jYwCKXeG1NQk9WXqAtIT kpm_input-field-button kpm_gray-key-icon"><div class="YaUcSL9pZJkawAbwG9cF" style="position: absolute !important; width: 32px !important; height: 24px !important; top: -40px !important; left: 105px !important;"><svg class="J6MDbAOqISHJlMVCHWAE" viewBox="25 25 50 50" xmlnsXlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" style="inset: 0px 4px !important;"><circle cx="50" cy="50" r="20"></circle></svg></div><circle cx="11.5" cy="9.5" r="3" fill="white" stroke="white"></circle><path d="M10 9H13V18L11.5 19L10 18V9Z" fill="white"></path><path d="M12.5 8.5C12.5 9.05228 12.0523 9.5 11.5 9.5C10.9477 9.5 10.5 9.05228 10.5 8.5C10.5 7.94772 10.9477 7.5 11.5 7.5C12.0523 7.5 12.5 7.94772 12.5 8.5Z" class="x42ZoZlm9VYGazCSUyBE"></path><rect x="10" y="16" width="1" height="1" class="x42ZoZlm9VYGazCSUyBE"></rect><rect x="10" y="14" width="1" height="1" class="x42ZoZlm9VYGazCSUyBE"></rect></svg></kpm-button>
-        </div>
-        <div class="form-floating">
-            <input type="password" class="form-control-lg" id="floatingPassword" placeholder="Password" name="password">
-<!--            <label for="floatingPassword">Password</label>-->
-            <kpm-button style="position: relative !important; z-index: 3 !important;" class="jYwCKXeG1NQk9WXqAtIT kpm_input-field-button kpm_gray-key-icon"><div class="YaUcSL9pZJkawAbwG9cF" style="position: absolute !important; width: 32px !important; height: 24px !important; top: -40px !important; left: 105px !important;"><svg class="J6MDbAOqISHJlMVCHWAE" viewBox="25 25 50 50" xmlnsXlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" style="inset: 0px 4px !important;"><circle cx="50" cy="50" r="20"></circle></svg></div><circle cx="11.5" cy="9.5" r="3" fill="white" stroke="white"></circle><path d="M10 9H13V18L11.5 19L10 18V9Z" fill="white"></path><path d="M12.5 8.5C12.5 9.05228 12.0523 9.5 11.5 9.5C10.9477 9.5 10.5 9.05228 10.5 8.5C10.5 7.94772 10.9477 7.5 11.5 7.5C12.0523 7.5 12.5 7.94772 12.5 8.5Z" class="x42ZoZlm9VYGazCSUyBE"></path><rect x="10" y="16" width="1" height="1" class="x42ZoZlm9VYGazCSUyBE"></rect><rect x="10" y="14" width="1" height="1" class="x42ZoZlm9VYGazCSUyBE"></rect></svg></kpm-button>
-        </div>
-
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" value="remember-me"> Remember me
-            </label>
-        </div>
-        <button class="form-control-lg" type="submit">Sign in</button>
-        <p class="mt-5 mb-3 text-muted">© 2023</p>
-    </form>
-</main>
-
-<script src="/"></script>
-
-
-
+<center>
+    <br/>
+    <p class="text-muted">© 2023</p>
+</center>
 </body>
 </html>

@@ -29,17 +29,18 @@
             border-radius: 20px;
             box-shadow: 0 0 0 3px white, 0 0 13px #333;
             width: 100%;
-            height: 300px;
+            height: 100px;
             align-self: stretch;
         }
         .card {
             background-color: #414040;
             box-shadow: 0 0 0 2px #2c2b2b, 0 0 2px #333;
             position: relative;
+            margin-bottom: 15px;
             border-radius: 20px;
         }
         .card-main {
-            background-color: #586b7d;
+            background-color: #314355;
             box-shadow: 0 0 0 2px #2c2b2b, 0 0 2px #333;
             position: relative;
             margin-bottom: 15px;
@@ -48,12 +49,6 @@
         .content-card {
             margin-left: 15px;
             margin-right: 15px;
-            margin-top: 15px;
-            margin-bottom: 15px;
-        }
-        .content-card-main {
-            margin-left: 40px;
-            margin-right: 40px;
             margin-top: 15px;
             margin-bottom: 15px;
         }
@@ -91,8 +86,12 @@
     <div class="row flex-nowrap justify-content-between align-items-center" style="height:80px">
         <div  class="col-4 d-flex justify-content-start align-items-center">
             <div>
-                <a href="/login"><img src="/logotip.png" width="200" height="50"></a>
+                <a href="/"><img src="/logotip.png" width="200" height="50"></a>
             </div>
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-3"><circle cx="10.5" cy="10.5" r="7.5"></circle><line x1="21" y1="21" x2="15.8" y2="15.8"></line></svg>
+            </div>
+            <div><input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search"></div>
         </div>
         <div class="col-4 d-flex justify-content-end align-items-center">
             <div class="dropdown">
@@ -167,27 +166,74 @@
 <body>
 <div class="container-fluid">
     <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-dark sidebar">
+            <div class="sidebar-sticky">
+                <ul class="nav flex-column">
+                    <br/>
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="'/userPage/' + ${authUser.id}" style="color:white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                            My page
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="'/userPage/editProfile/' + ${authUser.id}" style="color:white">
+                            <img src="/icons/1904675-configuration-edit-gear-options-preferences-setting-settings_122525.svg" width="24" height="24">
+                            Edit Profile
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/allUsers" style="color:white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                            Users
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" style="color:white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                            Info
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-            <div class="row-info">
-                <div class="card">
-                    <div class="content-card">
-                        <h4>Registration:</h4>
-                        <p th:text = "${error}"></p>
-                        <form action="registration" th:action="@{registration}" th:object="${user}" method="post">
-                            <p>Username: <input name="userName" type="text" th:fieled="*{userName}" class="form-control"></p>
-                            <p>Name: <input name="name" type="text" th:fieled="*{name}" class="form-control"></p>
-                            <p>Surname: <input name="surname" type="text" th:fieled="*{surname}" class="form-control"></p>
-                            <p>Gender: <input name="gender" type="text" th:fieled="*{gender}" class="form-control"></p>
-                            <p>Email: <input name="email" type="email" th:fieled="*{email}" class="form-control" placeholder="user@gmail.com"></p>
-                            <p>Birthday: <input name="birthday" type="date" th:fieled="*{birthday}" class="form-control"></p>
-                            <p>Password: <input name="password" type="password" th:fieled="*{password}" class="form-control"></p>
-                            <p>Repeat Password: <input name="password" type="password" class="form-control"></p>
+            <div class="row-main">
+                <div>
+                    <div class="card-main">
+                        <div class="content-card-main">
+                            <div class="card">
+                                <div class="content-card">
+                                    <h3>All Users</h3>
+                                </div>
+                            </div>
+                            <div class="container">
+                                <div class="row">
+                                    <div th:each="users:${allUsers}" class="col-md-4">
+                                        <div class="card">
+                                            <div class="content-card">
+                                                <div class="card mb-4 box-shadow">
+                                                    <div th:if="${users.photoName != null}">
+                                                        <p><img th:src="'/img/'+ ${users.userName} + '/' + ${users.photoName}" class="card-img-top" style="height:100; width:100%; display: block; border-radius: 20px;"></p>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <center>
+                                                            <h5 class="card-title"><a th:href="'/userPage/' + ${users.id}" th:text="${users.userName}" style="color: white">Nothing</a></h5>
+                                                            <p th:text="${users.roles}"></p>
+                                                        </center>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                            <p><input type="submit" class="btn btn-light" value="Submit"/></p>
-                        </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+
         </main>
     </div>
 </div>

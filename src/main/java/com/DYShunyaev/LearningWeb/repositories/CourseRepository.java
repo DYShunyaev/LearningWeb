@@ -1,6 +1,7 @@
 package com.DYShunyaev.LearningWeb.repositories;
 
 import com.DYShunyaev.LearningWeb.models.Course;
+import com.DYShunyaev.LearningWeb.models.Users;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

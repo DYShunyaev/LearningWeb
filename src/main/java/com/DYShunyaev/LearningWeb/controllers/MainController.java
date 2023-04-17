@@ -41,8 +41,17 @@ public class MainController {
             model.addAttribute("adminPage", users);
             return "redirect:/admin/main";
         }
-        model.addAttribute("userPage", users);
+        model.addAttribute("authUser", users);
         return "mainView";
     }
 
+    @RequestMapping("/allUsers")
+    public String allUsers(Model model) {
+        model.addAttribute("authUser", userService.getAuthorizationUser());
+
+        List<Users> usersList = userService.findAllUsers();
+        model.addAttribute("allUsers", usersList);
+
+        return "allUsers";
+    }
 }

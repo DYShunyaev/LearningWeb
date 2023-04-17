@@ -74,6 +74,8 @@
                     <th>Roles</th>
                     <th></th>
                     <th></th>
+                    <th></th>
+                    <th></th>
                 </tr>
                 <tr th:each="list:${getAll}">
                     <td th:text="${list.id}" >Nothing</td>
@@ -87,8 +89,10 @@
                     <td th:text="${list.password}">Nothing</td>
                     <td th:text="${list.active}">Nothing</td>
                     <td th:text="${list.roles}" ><font color="red">Nothing</font></td>
-                    <td><a th:href="'/admin/getUserAdminRole/' + ${list.id}" >Set Admin Role</a></td>
-                    <td><a th:href="'/admin/removeAdminRole/' + ${list.id}">Remove Admin Role</a></td>
+                    <td><a th:href="'/admin/getUserRole/' + ${Admin} + '/' + ${list.id}" >Set Admin Role</a></td>
+                    <td><a th:href="'/admin/removeRole/' + ${Admin} + '/' + ${list.id}">Remove Admin Role</a></td>
+                    <td><a th:href="'/admin/getUserRole/' + ${Teacher} + '/' + ${list.id}" >Set Teacher Role</a></td>
+                    <td><a th:href="'/admin/removeRole/' + ${Teacher} + '/' + ${list.id}">Remove Teacher Role</a></td>
                 </tr>
             </table>
         </center>

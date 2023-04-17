@@ -4,69 +4,251 @@
     <title>Getting Started: Serving Web Content</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <style>
-       header {
-            background: #1663ac;
-            img: url(D:/Java/LearningWeb/logo.png);
+        header {
+            background: #191818;
             position: relative;
+            height: 80px;
+            content: center;
         }
         body {
-            background: #1a1a1a;
-            color: #d1ffff;
+            background: #212529;
+            color: #ffffff;
+            height: 100%;
+        }
+        .row-info {
+            float: left;
+            width: 25%;
+            margin-right: 25px;
+        }
+        .row-main {
+            margin-bottom: 15px;
+        }
+        .round {
+            border-radius: 20px;
+            box-shadow: 0 0 0 3px white, 0 0 13px #333;
+            width: 100%;
+            height: 300px;
+            align-self: stretch;
+        }
+        .card {
+            background-color: #414040;
+            box-shadow: 0 0 0 2px #2c2b2b, 0 0 2px #333;
+            position: relative;
+            margin-bottom: 15px;
+            border-radius: 20px;
+        }
+        .card-main {
+            background-color: #314355;
+            box-shadow: 0 0 0 2px #2c2b2b, 0 0 2px #333;
+            position: relative;
+            margin-bottom: 15px;
+            border-radius: 20px;
+        }
+        .content-card {
+            margin-left: 15px;
+            margin-right: 15px;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+        #calendar2 {
+          background: #0b0a0a;
+          width: 200px;
+          font: monospace;
+          line-height: 1.2em;
+          font-size: 15px;
+          text-align: center;
+        }
+        #calendar2 thead tr:last-child {
+          font-size: small;
+          color: white;
+        }
+        #calendar2 thead tr:nth-child(1) td:nth-child(2) {
+          color: white;
+        }
+        #calendar2 thead tr:nth-child(1) td:nth-child(1):hover, #calendar2 thead tr:nth-child(1) td:nth-child(3):hover {
+          cursor: pointer;
+        }
+        #calendar2 tbody td {
+          color: rgb(44, 86, 122);
+        }
+        #calendar2 tbody td:nth-child(n+6), #calendar2 .holiday {
+          color: rgb(231, 140, 92);
+        }
+        #calendar2 tbody td.today {
+          background: rgb(220, 0, 0);
+          color: #0b0a0a;
         }
     </style>
 </head>
-<div class="container">
-    <header class="blog-header lh-10 py-2">
-        <div class="row flex-nowrap justify-content-between align-items-center">
-            <div class="col-4 pt-1">
-                <img src="/logo.png" width="70" height="70">
+<header>
+    <div class="row flex-nowrap justify-content-between align-items-center" style="height:80px">
+        <div  class="col-4 d-flex justify-content-start align-items-center">
+            <div>
+                <a href="/"><img src="/logotip.png" width="200" height="50"></a>
             </div>
-            <div class="col-4 text-center">
-                <h1><a class="blog-header-logo text-dark" href="/">Learning Platform</a></h1>
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-3"><circle cx="10.5" cy="10.5" r="7.5"></circle><line x1="21" y1="21" x2="15.8" y2="15.8"></line></svg>
             </div>
-            <div class="col-4 d-flex justify-content-end align-items-center">
-                <a class="link-secondary" href="#" aria-label="Search">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="mx-3" role="img" viewBox="0 0 24 24"><title>Search</title><circle cx="10.5" cy="10.5" r="7.5"></circle><path d="M21 21l-5.2-5.2"></path></svg>
-                </a>
-                <a class="btn btn-sm btn-outline-secondary" href="/registration">Registration</a>
-                <a class="btn btn-sm btn-outline-secondary" href="/login">Sign up</a>
-            </div>
+            <div><input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search"></div>
         </div>
-    </header>
+        <div class="col-4 d-flex justify-content-end align-items-center">
+            <div class="dropdown">
+                <button type="button" class="btn btn-sm btn-outline-light" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="/icons/free-icon-calendar-tool-for-time-organization-42253.png" width="15" height="15">
+                    Calendar
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li><div >
+                        <table id="calendar2">
+                            <thead>
+                            <tr><td>‹<td colspan="5"><td>›
+                            <tr><td>Пн<td>Вт<td>Ср<td>Чт<td>Пт<td>Сб<td>Вс
+                            <tbody>
+                        </table>
 
-    <div class="nav-scroller py-1 mb-2" th:object="${userPage}" style="background:#140c76">
-        <nav class="nav d-flex justify-content-between">
-            <a class="p-2 link-secondary" th:href="'userPage/' + ${userPage.id}">My page</a>
-            <a class="p-2 link-secondary" href="#">U.S.</a>
-            <a class="p-2 link-secondary" href="#">Technology</a>
-            <a class="p-2 link-secondary" href="#">Design</a>
-            <a class="p-2 link-secondary" href="#">Culture</a>
-            <a class="p-2 link-secondary" href="#">Business</a>
-            <a class="p-2 link-secondary" href="#">Politics</a>
-            <a class="p-2 link-secondary" href="#">Opinion</a>
-            <a class="p-2 link-secondary" href="#">Science</a>
-            <a class="p-2 link-secondary" href="#">Health</a>
-            <a class="p-2 link-secondary" href="#">Style</a>
-            <a class="p-2 link-secondary" href="#">Travel</a>
+                        <script>
+                                    function Calendar2(id, year, month) {
+                                    var Dlast = new Date(year,month+1,0).getDate(),
+                                        D = new Date(year,month,Dlast),
+                                        DNlast = new Date(D.getFullYear(),D.getMonth(),Dlast).getDay(),
+                                        DNfirst = new Date(D.getFullYear(),D.getMonth(),1).getDay(),
+                                        calendar = '<tr>',
+                                        month=["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"];
+                                    if (DNfirst != 0) {
+                                      for(var  i = 1; i < DNfirst; i++) calendar += '<td>';
+                                    }else{
+                                      for(var  i = 0; i < 6; i++) calendar += '<td>';
+                                    }
+                                    for(var  i = 1; i <= Dlast; i++) {
+                                      if (i == new Date().getDate() && D.getFullYear() == new Date().getFullYear() && D.getMonth() == new Date().getMonth()) {
+                                        calendar += '<td class="today">' + i;
+                                      }else{
+                                        calendar += '<td>' + i;
+                                      }
+                                      if (new Date(D.getFullYear(),D.getMonth(),i).getDay() == 0) {
+                                        calendar += '<tr>';
+                                      }
+                                    }
+                                    for(var  i = DNlast; i < 7; i++) calendar += '<td>&nbsp;';
+                                    document.querySelector('#'+id+' tbody').innerHTML = calendar;
+                                    document.querySelector('#'+id+' thead td:nth-child(2)').innerHTML = month[D.getMonth()] +' '+ D.getFullYear();
+                                    document.querySelector('#'+id+' thead td:nth-child(2)').dataset.month = D.getMonth();
+                                    document.querySelector('#'+id+' thead td:nth-child(2)').dataset.year = D.getFullYear();
+                                    if (document.querySelectorAll('#'+id+' tbody tr').length < 6) {  // чтобы при перелистывании месяцев не "подпрыгивала" вся страница, добавляется ряд пустых клеток. Итог: всегда 6 строк для цифр
+                                        document.querySelector('#'+id+' tbody').innerHTML += '<tr><td>&nbsp;<td>&nbsp;<td>&nbsp;<td>&nbsp;<td>&nbsp;<td>&nbsp;<td>&nbsp;';
+                                    }
+                                    }
+                                    Calendar2("calendar2", new Date().getFullYear(), new Date().getMonth());
+                                    // переключатель минус месяц
+                                    document.querySelector('#calendar2 thead tr:nth-child(1) td:nth-child(1)').onclick = function() {
+                                      Calendar2("calendar2", document.querySelector('#calendar2 thead td:nth-child(2)').dataset.year, parseFloat(document.querySelector('#calendar2 thead td:nth-child(2)').dataset.month)-1);
+                                    }
+                                    // переключатель плюс месяц
+                                    document.querySelector('#calendar2 thead tr:nth-child(1) td:nth-child(3)').onclick = function() {
+                                      Calendar2("calendar2", document.querySelector('#calendar2 thead td:nth-child(2)').dataset.year, parseFloat(document.querySelector('#calendar2 thead td:nth-child(2)').dataset.month)+1);
+                                    }
+                                </script>
+                    </div></li>
+                </ul>
+            </div>
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="btn btn-sm btn-outline-light">
+                    <img src="/icons/exit_icon-icons.com_48304.png" width="15" height="15">
+                    Sing out
+                </button>
+            </form>
+            <div class="p-2"></div>
+        </div>
+    </div>
+</header>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-dark sidebar">
+            <div class="sidebar-sticky">
+                <ul class="nav flex-column">
+                    <br/>
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="'/userPage/' + ${authUser.id}" style="color:white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                            My page
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="'/userPage/editProfile/' + ${authUser.id}" style="color:white">
+                            <img src="/icons/1904675-configuration-edit-gear-options-preferences-setting-settings_122525.svg" width="24" height="24">
+                            Edit Profile
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/allUsers" style="color:white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                            Users
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" style="color:white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                            Info
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </nav>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <div class="row-main">
+                <div>
+                    <div class="card-main">
+                        <div class="content-card-main">
+                            <div class="card">
+                                <div class="content-card">
+                                    <h3>Courses available</h3>
+                                    <div th:if="${courses.isEmpty()}">
+                                        You haven't added courses
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="container">
+                                <div class="row">
+                                    <div th:each="courses:${courses}" class="col-md-4">
+                                        <div class="card">
+                                            <div class="content-card">
+                                                <div class="card mb-4 box-shadow">
+                                                    <div th:if="${courses.previewName != null}">
+                                                        <p><img th:src="'/img/courses/' + ${courses.courseName} + '/' + ${courses.previewName}" class="card-img-top" style="height:225; width:100%; display: block; border-radius: 20px;"></p>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <center>
+                                                            <h5 class="card-title"><a th:href="'/course/' + ${courses.id}" th:text="${courses.courseName}" style="color: white">Nothing</a></h5>
+                                                        </center>
+                                                        <p class="card-text"><label th:text="${courses.coursePreview}"></label></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
 </div>
-<body bgcolor="#500e4b">
-    <center><h1>Learning Platform</h1></center>
-    <div>
-        <center>
-            <table>
-                <tr th:each="courseList:${courses}">
-                    <td><a th:href="'/course/' + ${courseList.id}" th:text="${courseList.courseName}">Nothing</a></td>
-                    <td><div th:if="${courseList.previewName != null}">
-                        <p><img th:src="'/img/courses/' + ${courseList.courseName} + '/' + ${courseList.previewName}" alt="Photo" width="150" height="100"></p>
-                    </div></td>
-                </tr>
-            </table>
-        </center>
+<br/><br/><br/>
+<footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+    <div class="col-md-4 d-flex align-items-center">
+        <center><span class="mb-3 mb-md-0 text-muted">© 2023 DYShunyaev</span></center>
     </div>
-<!--    <a href="/registration">Registration</a>-->
-<!--    <a href="/search">Registration</a>-->
+
+    <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+        <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"></use></svg></a></li>
+        <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"></use></svg></a></li>
+        <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"></use></svg></a></li>
+    </ul>
+</footer>
 </body>
 </html>

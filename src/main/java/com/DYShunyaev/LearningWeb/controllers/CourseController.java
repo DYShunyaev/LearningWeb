@@ -4,6 +4,7 @@ import com.DYShunyaev.LearningWeb.models.Course;
 import com.DYShunyaev.LearningWeb.models.Users;
 import com.DYShunyaev.LearningWeb.services.CourseService;
 import com.DYShunyaev.LearningWeb.services.UserService;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -50,16 +51,19 @@ public class CourseController {
         Course course = courseService.findCourseById(courseId).orElseThrow();
         model.addAttribute("coursePage", course);
 
-        return "coursePage";
+        Set<Users> usersSet = course.getUsersSubs();
+
+        model.addAttribute("usersList", usersSet);
+        model.addAttribute("usersSize", usersSet.size());
+        return "courses/coursePage";
     }
     @RequestMapping("/byUser/{id}/createCourse")
     public String createCourse(@PathVariable(name = "id") long userId,
                                Model model, Model userModel) {
-        Users user = userService.findUserById(userId).orElseThrow();
-        userModel.addAttribute("userPage", user);
+        model.addAttribute("authUser", userService.getAuthorizationUser());
         Course course = new Course();
         model.addAttribute("course", course);
-        return "createCourse";
+        return "courses/createCourse";
     }
 
     @PostMapping("/byUser/{id}/createCourse")
@@ -106,7 +110,7 @@ public class CourseController {
         Course course = courseService.findCourseById(id).orElseThrow();
         model.addAttribute("authUser", userService.getAuthorizationUser());
         model.addAttribute("coursePage", course);
-        return "editProfileCourse";
+        return "courses/editProfileCourse";
     }
 
     @PostMapping("/editProfileCourse/{id}")
@@ -114,7 +118,7 @@ public class CourseController {
                            @RequestParam(name = "courseName", required = false) String courseName,
                            @RequestParam(name = "coursePreview",required = false) String coursePreview,
                            @RequestParam(name = "courseContent", required = false) String courseContent,
-                           @RequestParam("video")MultipartFile file) throws IOException {
+                           @RequestParam(value = "video", required = false)MultipartFile file) throws IOException {
         Course course = courseService.findCourseById(id).orElseThrow();
         course.setCourseName(courseName);
         course.setCoursePreview(coursePreview);
@@ -133,6 +137,7 @@ public class CourseController {
             file.transferTo(new File(upload + resultFileName));
             course.setContentFileName(resultFileName);
         }
+        else course.setCourseContent(course.getCourseContent());
         courseService.createNewCourse(course);
         return "redirect:/course/" + id;
     }
@@ -140,6 +145,13 @@ public class CourseController {
     @RequestMapping("/delete/{user_id}/{course_id}")
     public String deleteByUser(@PathVariable(name = "user_id") long userId,
                                @PathVariable(name = "course_id") long courseId) {
+        Course course = courseService.findCourseById(courseId).orElseThrow();
+        File file = new File("usersPhoto/courses/" +course.getCourseName());
+        try {
+            FileUtils.deleteDirectory(file);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         courseService.deleteCourse(courseId);
         return "redirect:/userPage/" + userId;
     }
@@ -164,17 +176,5 @@ public class CourseController {
         courseService.unsubscribe(user, course);
 
         return "redirect:/course/" + courseId;
-    }
-
-    @RequestMapping("/usersList/{course_id}")
-    public String usersListByCourse(@PathVariable(name = "course_id") long courseId,
-                                    Model model) {
-
-        Course course = courseService.findCourseById(courseId).orElseThrow();
-        Set<Users> usersSet = course.getUsersSubs();
-
-        model.addAttribute("usersList", usersSet);
-        model.addAttribute("authUser", userService.getAuthorizationUser());
-        return "usersListByCourse";
     }
 }

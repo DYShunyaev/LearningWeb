@@ -38,9 +38,17 @@ public class AuthorizationController {
                               @RequestParam(name = "email", required = false) String email,
                               @RequestParam(name = "birthday", required = false) Date birthday,
                               @RequestParam(name = "password", required = false) String password,
+                              @RequestParam(name = "passwordRepeat", required = false) String passwordRepeat,
                               Model model) {
         if (!userService.existByUserName(username)) {
             String message = "Users with this username is already registered!";
+            model.addAttribute("error", message);
+            Users user = new Users();
+            model.addAttribute("user", user);
+            return registration(model);
+        }
+        if (!password.equals(passwordRepeat)) {
+            String message = "You have entered incorrect passwords!";
             model.addAttribute("error", message);
             Users user = new Users();
             model.addAttribute("user", user);
