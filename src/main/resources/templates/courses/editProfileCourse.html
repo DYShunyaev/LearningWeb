@@ -210,12 +210,12 @@
                         <form action="#" th:action="${coursePage.id}" method="post" enctype="multipart/form-data">
                             <p>Name: <input name="courseName" type="text" th:value="${coursePage.courseName}" class="form-control"></p>
                             <p>Preview: <input name="coursePreview" type="text" th:value="${coursePage.coursePreview}" class="form-control"></p>
-                            <p>Content: <input name="courseContent" type="text" th:value="${coursePage.courseContent}" class="form-control"></p>
-<!--                            <div class="mb-3">-->
-<!--                                <label for="exampleFormControlTextarea1" class="form-label">Content: </label>-->
-<!--                                <textarea name="courseContent" th:value="${coursePage.courseContent}" class="form-control" id="exampleFormControlTextarea1" rows="6" th:typeof="${coursePage.courseContent}">-->
-<!--                                </textarea>-->
-<!--                            </div>-->
+<!--                            <p>Content: <input name="courseContent" type="text" th:value="${coursePage.courseContent}" class="form-control"></p>-->
+                            <div class="mb-3">
+                                <label for="exampleFormControlTextarea1" class="form-label">Content: </label>
+                                <textarea name="courseContent" th:value="${coursePage.courseContent}" class="form-control" id="exampleFormControlTextarea1" rows="6" th:text="${coursePage.courseContent}">
+                                </textarea>
+                            </div>
                             <div class="mb-3">
                                 <label for="formFileMultiple" class="form-label">Video Content:</label>
                                 <input class="form-control" name="video" type="file" th:fieled="*{coursePage.ContentFileName}" accept="video/*" id="formFileMultiple">

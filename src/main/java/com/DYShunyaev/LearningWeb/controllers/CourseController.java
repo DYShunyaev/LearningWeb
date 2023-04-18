@@ -1,7 +1,9 @@
 package com.DYShunyaev.LearningWeb.controllers;
 
+import com.DYShunyaev.LearningWeb.models.Comments;
 import com.DYShunyaev.LearningWeb.models.Course;
 import com.DYShunyaev.LearningWeb.models.Users;
+import com.DYShunyaev.LearningWeb.services.CommentsService;
 import com.DYShunyaev.LearningWeb.services.CourseService;
 import com.DYShunyaev.LearningWeb.services.UserService;
 import org.apache.commons.io.FileUtils;
@@ -17,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Date;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -28,11 +30,14 @@ import java.util.regex.Pattern;
 public class CourseController {
     private final CourseService courseService;
     private final UserService userService;
+    private final CommentsService commentsService;
 
     @Autowired
-    public CourseController(CourseService courseService, UserService userService) {
+    public CourseController(CourseService courseService, UserService userService,
+                            CommentsService commentsService) {
         this.courseService = courseService;
         this.userService = userService;
+        this.commentsService = commentsService;
     }
 
     @Value("${upload.path}")
@@ -47,14 +52,23 @@ public class CourseController {
             model.addAttribute("error", message);
             return "error";
         }
-
         Course course = courseService.findCourseById(courseId).orElseThrow();
         model.addAttribute("coursePage", course);
+
+        Users user = userService.findUserById(course.getTeacherId()).orElseThrow();
+        model.addAttribute("author", user.getUserName());
 
         Set<Users> usersSet = course.getUsersSubs();
 
         model.addAttribute("usersList", usersSet);
         model.addAttribute("usersSize", usersSet.size());
+
+        List<Comments> commentsList = commentsService.getCommentsByCourseId(courseId);
+        model.addAttribute("comments", commentsList);
+
+        Comments comment = new Comments();
+        model.addAttribute("comment", comment);
+
         return "courses/coursePage";
     }
     @RequestMapping("/byUser/{id}/createCourse")
@@ -118,7 +132,8 @@ public class CourseController {
                            @RequestParam(name = "courseName", required = false) String courseName,
                            @RequestParam(name = "coursePreview",required = false) String coursePreview,
                            @RequestParam(name = "courseContent", required = false) String courseContent,
-                           @RequestParam(value = "video", required = false)MultipartFile file) throws IOException {
+                           @RequestParam(value = "video")MultipartFile file) throws IOException {
+        courseName = getRegExCourseName(courseName);
         Course course = courseService.findCourseById(id).orElseThrow();
         course.setCourseName(courseName);
         course.setCoursePreview(coursePreview);
@@ -137,7 +152,6 @@ public class CourseController {
             file.transferTo(new File(upload + resultFileName));
             course.setContentFileName(resultFileName);
         }
-        else course.setCourseContent(course.getCourseContent());
         courseService.createNewCourse(course);
         return "redirect:/course/" + id;
     }
@@ -145,14 +159,9 @@ public class CourseController {
     @RequestMapping("/delete/{user_id}/{course_id}")
     public String deleteByUser(@PathVariable(name = "user_id") long userId,
                                @PathVariable(name = "course_id") long courseId) {
-        Course course = courseService.findCourseById(courseId).orElseThrow();
-        File file = new File("usersPhoto/courses/" +course.getCourseName());
-        try {
-            FileUtils.deleteDirectory(file);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+
         courseService.deleteCourse(courseId);
+
         return "redirect:/userPage/" + userId;
     }
 

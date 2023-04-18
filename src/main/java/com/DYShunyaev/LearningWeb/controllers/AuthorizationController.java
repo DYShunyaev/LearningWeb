@@ -47,13 +47,13 @@ public class AuthorizationController {
             model.addAttribute("user", user);
             return registration(model);
         }
-        if (!password.equals(passwordRepeat)) {
-            String message = "You have entered incorrect passwords!";
-            model.addAttribute("error", message);
-            Users user = new Users();
-            model.addAttribute("user", user);
-            return registration(model);
-        }
+//        if (!password.equals(passwordRepeat)) {
+//            String message = "You have entered incorrect passwords!";
+//            model.addAttribute("error", message);
+//            Users user = new Users();
+//            model.addAttribute("user", user);
+//            return registration(model);
+//        }
         Users user = new Users(username, name, surname, gender, email, birthday, password);
         if (username.equals("admin")) {
             user.setRoles(Collections.singleton(Role.ADMIN));

@@ -4,9 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Getter
@@ -38,6 +36,8 @@ public class Course {
     @ToString.Exclude
     private Users teacher;
 
+    @OneToMany(mappedBy = "withCourse", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comments> commentsList = new ArrayList<>();
     @Column(name = "teacher_id", insertable = false, updatable = false)
     private Long teacherId;
 
