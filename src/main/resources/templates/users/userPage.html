@@ -195,6 +195,8 @@
                 <div class="card">
                     <div class="content-card">
                         <div th:if="${userPage.photoName != null}">
+<!--                            <p><img th:src="'/userPage/' + ${userPage.photoName}" alt="Photo" style="height:300; width:100%; display: block; border-radius: 20px;-->
+<!--                box-shadow: 0 0 0 3px white, 0 0 13px #333;" class="card-img-top"></p>-->
                             <p><img th:src="'/img/'+ ${userPage.userName} + '/' + ${userPage.photoName}" alt="Photo" style="height:300; width:100%; display: block; border-radius: 20px;
                 box-shadow: 0 0 0 3px white, 0 0 13px #333;" class="card-img-top"></p>
                         </div>
@@ -206,20 +208,22 @@
                             <p>Role: <label th:text="${userRole}"></label></p>
                         </div>
                         <div th:if="${userPage.id == authUser.id}">
-                            <div style="margin-right: 15px;">
-                                <a th:href="'/course/byUser/' + ${userPage.id} + '/createCourse'" class="btn btn-sm btn-outline-light">Create Course</a>
-                                <button type="button" class="btn btn-sm btn-outline-light" data-bs-toggle="dropdown" aria-expanded="false" th:if="${!courses.isEmpty()}">
-                                    Courses by <label th:text="${userPage.name}"></label>
-                                </button>
-                                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton1" >
-                                    <li th:each="list:${courses}">
-                                        <div class="btn-group" role="group" aria-label="Basic outlined example">
-                                            <a class="btn btn-outline-light" th:href="'/course/' + ${list.id}" th:text="${list.courseName}">Nothing</a>
-                                            <a class="btn btn-outline-light" th:href="'/course/delete/' + ${userPage.id} + '/' + ${list.id}">Delete Course</a>
-                                        </div>
-                                        <br/>
-                                    </li>
-                                </ul>
+                            <div th:if="${userRole == 'TEACHER'}">
+                                <div style="margin-right: 15px;">
+                                    <a th:href="'/course/byUser/' + ${userPage.id} + '/createCourse'" class="btn btn-sm btn-outline-light">Create Course</a>
+                                    <button type="button" class="btn btn-sm btn-outline-light" data-bs-toggle="dropdown" aria-expanded="false" th:if="${!courses.isEmpty()}">
+                                        Courses by <label th:text="${userPage.name}"></label>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton1" >
+                                        <li th:each="list:${courses}">
+                                            <div class="btn-group" role="group" aria-label="Basic outlined example">
+                                                <a class="btn btn-outline-light" th:href="'/course/' + ${list.id}" th:text="${list.courseName}">Nothing</a>
+                                                <a class="btn btn-outline-light" th:href="'/course/delete/' + ${userPage.id} + '/' + ${list.id}">Delete Course</a>
+                                            </div>
+                                            <br/>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>

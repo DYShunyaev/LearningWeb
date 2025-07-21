@@ -69,6 +69,17 @@ public class Users {
     public Users() {
     }
 
+    public Users(Long id, String username, String name, String surname, char gender, String email, Date birthday, String password) {
+        this.id = id;
+        this.userName = username;
+        this.name = name;
+        this.surname = surname;
+        this.gender = gender;
+        this.email = email;
+        this.birthday = birthday;
+        this.password = password;
+    }
+
     public Users(String username, String name, String surname, char gender, String email, Date birthday, String password) {
         this.userName = username;
         this.name = name;

@@ -26,17 +26,22 @@ public class AdminController {
     }
 
     @RequestMapping("/main")
-    public String adminMain(Model model, Model getAllUsers){
+    public String adminMain(Model model){
+
         Users admin = userService.getAuthorizationUser();
         model.addAttribute("adminPage", admin);
+
         List<Users> users = userService.findAllUsers();
-        getAllUsers.addAttribute("getAll", users);
+        model.addAttribute("getAll", users);
+
+        List<Course> courses = courseService.showAllCourses();
+        model.addAttribute("courses", courses);
         return "admin/adminMain";
     }
 
     @RequestMapping("/adminPage/{id}")
     public String adminPage(@PathVariable(value = "id", required = false) long id, Model model) {
-        if (!userService.existUserById(id)) {
+        if (userService.existUserById(id)) {
             String message = "This admin not founded.";
             model.addAttribute("error", message);
             return "error";
@@ -49,8 +54,16 @@ public class AdminController {
         return "admin/adminPage";
     }
 
+    @RequestMapping("/updateActive/{id}")
+    public String updateActiveUser(@PathVariable(name = "id") Long userId) {
+        Users user = userService.findUserById(userId).orElseThrow();
+        user.setActive(!user.isActive());
+        userService.saveNewUser(user);
+
+        return "redirect:/admin/main";
+    }
     @RequestMapping("/getUserRole/{role}/{id}")
-    public String setUserAdminRole(@PathVariable(name = "id") Long user_id,
+    public String setRoleFromUser(@PathVariable(name = "id") Long user_id,
                                    @PathVariable(name = "role") String role) {
         Users user = userService.findUserById(user_id).orElseThrow();
         Set<Role> roles = user.getRoles();
@@ -65,7 +78,7 @@ public class AdminController {
         return "redirect:/admin/main";
     }
     @RequestMapping("/removeRole/{role}/{id}")
-    public String removeAdminRole(@PathVariable(name = "id") Long user_id,
+    public String removeRoleFromUser(@PathVariable(name = "id") Long user_id,
                                   @PathVariable(name = "role") String role) {
         Users user = userService.findUserById(user_id).orElseThrow();
         Set<Role> roles = user.getRoles();
@@ -75,6 +88,18 @@ public class AdminController {
         }
         roles.add(Role.USER);
         userService.saveNewUser(user);
+        return "redirect:/admin/main";
+    }
+
+    @RequestMapping("/deleteUser/{user_id}")
+    public String deleteUser(@PathVariable(name = "user_id") Long userId) {
+        userService.deleteUserById(userId);
+        return "redirect:/admin/main";
+    }
+
+    @RequestMapping("/deleteCourse/{course_id}")
+    public String deleteCourse(@PathVariable(name = "course_id") Long courseId) {
+        courseService.deleteCourse(courseId);
         return "redirect:/admin/main";
     }
 }

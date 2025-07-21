@@ -50,6 +50,7 @@ public class MainController {
         model.addAttribute("authUser", userService.getAuthorizationUser());
 
         List<Users> usersList = userService.findAllUsers();
+        usersList = usersList.stream().filter(users -> !users.getUserName().equals("admin")).toList();
         model.addAttribute("allUsers", usersList);
 
         return "allUsers";

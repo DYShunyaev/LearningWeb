@@ -38,7 +38,6 @@ public class CourseService {
 
     public void deleteCourse(Long id) {
         Course course = courseRepository.findById(id).orElseThrow();
-//        commentsRepository.deleteAllByCourseId(course.getCommentsList());
         commentsRepository.deleteAll(course.getCommentsList());
         File file = new File("usersPhoto/courses/" + course.getCourseName());
         try {

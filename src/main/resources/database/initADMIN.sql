@@ -1,0 +1,1 @@
+insert into learning_platform.users (id,user_name, password) values ('1002341','admin','admin');

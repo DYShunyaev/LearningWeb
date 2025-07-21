@@ -76,23 +76,41 @@
                     <th></th>
                     <th></th>
                     <th></th>
+                    <th>Delete User</th>
                 </tr>
                 <tr th:each="list:${getAll}">
                     <td th:text="${list.id}" >Nothing</td>
                     <td th:text="${list.name}">Nothing</td>
                     <td th:text="${list.surname}">Nothing</td>
-<!--                    <td th:text="${list.userName}">Nothing</td>-->
                     <td><a th:href="'/userPage/'+${list.id}" th:text="${list.userName}">Nothing</a></td>
                     <td th:text="${list.email}">Nothing</td>
                     <td th:text="${list.gender}">Nothing</td>
                     <td th:text="${list.birthday}">Nothing</td>
                     <td th:text="${list.password}">Nothing</td>
-                    <td th:text="${list.active}">Nothing</td>
+                    <td> <a th:href="'/admin/updateActive/' + ${list.id}" th:text="${list.active}">Nothing</a></td>
                     <td th:text="${list.roles}" ><font color="red">Nothing</font></td>
-                    <td><a th:href="'/admin/getUserRole/' + ${Admin} + '/' + ${list.id}" >Set Admin Role</a></td>
-                    <td><a th:href="'/admin/removeRole/' + ${Admin} + '/' + ${list.id}">Remove Admin Role</a></td>
-                    <td><a th:href="'/admin/getUserRole/' + ${Teacher} + '/' + ${list.id}" >Set Teacher Role</a></td>
-                    <td><a th:href="'/admin/removeRole/' + ${Teacher} + '/' + ${list.id}">Remove Teacher Role</a></td>
+                    <td><a th:href="'/admin/getUserRole/Admin/' + ${list.id}" >Set Admin Role</a></td>
+                    <td><a th:href="'/admin/removeRole/Admin/' + ${list.id}">Remove Admin Role</a></td>
+                    <td><a th:href="'/admin/getUserRole/Teacher/' + ${list.id}" >Set Teacher Role</a></td>
+                    <td><a th:href="'/admin/removeRole/Teacher/' + ${list.id}">Remove Teacher Role</a></td>
+                    <td><a th:href="'/admin//deleteUser/' + ${list.id}">Delete User</a></td>
+                </tr>
+            </table>
+            <br/>
+            <table border="8" width="100" bgcolor="white" cellpadding="20">
+                <tr bgcolor="#4183cd">
+                    <th>id</th>
+                    <th>Course Name</th>
+                    <th>Course Preview</th>
+                    <th>Teacher</th>
+                    <th>Delete Course</th>
+                </tr>
+                <tr th:each="listCourses:${courses}">
+                    <th th:text="${listCourses.id}">Nothing</th>
+                    <td><a th:href="'/course/'+${listCourses.id}" th:text="${listCourses.courseName}">Nothing</a></td>
+                    <th th:text="${listCourses.coursePreview}">Nothing</th>
+                    <td><a th:href="'/userPage/'+${listCourses.teacherId}" th:text="${listCourses.teacherId}">Nothing</a></td>
+                    <td><a th:href="'/admin//deleteCourse/' + ${listCourses.id}">Delete Course</a></td>
                 </tr>
             </table>
         </center>

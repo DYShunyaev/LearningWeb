@@ -1,6 +1,7 @@
 package com.DYShunyaev.LearningWeb.controllers;
 
 import com.DYShunyaev.LearningWeb.models.Course;
+import com.DYShunyaev.LearningWeb.models.Role;
 import com.DYShunyaev.LearningWeb.models.Users;
 import com.DYShunyaev.LearningWeb.services.CourseService;
 import com.DYShunyaev.LearningWeb.services.UserService;
@@ -29,21 +30,30 @@ public class UserController {
     private String uploadPath;
     private final UserService userService;
     private final CourseService courseService;
+//    private final ImageService imageService;
 
     public UserController() {
         userService = null;
         courseService = null;
+//        imageService = null;
     }
 
     @Autowired
-    public UserController(UserService userService, CourseService courseService) {
+    public UserController(UserService userService, CourseService courseService
+//            , ImageService imageService
+    ) {
         this.userService = userService;
         this.courseService = courseService;
+//        this.imageService = imageService;
     }
 
+//    @RequestMapping("/{photoName}")
+//    public void showImage(@PathVariable(value = "photoName") String photoName, Model model) {
+//        model.addAttribute("userPhoto", imageService.getImage(photoName));
+//    }
     @RequestMapping("/{id}")
     public String userPage(@PathVariable(value = "id", required = false) long id, Model model) {
-        if (!userService.existUserById(id)) {
+        if (userService.existUserById(id)) {
             String message = "This user not founded.";
             model.addAttribute("error", message);
             return "error";
@@ -51,6 +61,8 @@ public class UserController {
         model.addAttribute("authUser", userService.getAuthorizationUser());
         Users user = userService.findUserById(id).orElseThrow();
         model.addAttribute("userPage", user);
+
+//        model.addAttribute("userPhoto", imageService.getImage(user.getPhotoName()));
 
         String role = user.getRoles().toString().replaceAll("\\W","");
         model.addAttribute("userRole", role);
@@ -94,6 +106,7 @@ public class UserController {
             String uuidFile = UUID.randomUUID().toString();
             String resultFileName = uuidFile + "." + file.getOriginalFilename();
             file.transferTo(new File(upload + "/" + resultFileName));
+//            String resultFileName = imageService.saveImage(imageService.toEntity(file),upload);
             user.setPhotoName(resultFileName);
         }
         userService.saveNewUser(user);
